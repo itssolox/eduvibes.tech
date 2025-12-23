@@ -1,0 +1,180 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 40% 3%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 20% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 20% 8%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 186 100% 50%;
+    --primary-foreground: 240 40% 3%;
+
+    --secondary: 285 100% 50%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 10% 15%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 285 100% 50%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 10% 15%;
+    --input: 240 10% 15%;
+    --ring: 186 100% 50%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 240 20% 6%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 186 100% 50%;
+    --sidebar-primary-foreground: 240 40% 3%;
+    --sidebar-accent: 285 100% 50%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 10% 15%;
+    --sidebar-ring: 186 100% 50%;
+
+    --chart-1: 186 100% 50%;
+    --chart-2: 285 100% 50%;
+    --chart-3: 200 100% 60%;
+    --chart-4: 300 100% 60%;
+    --chart-5: 240 10% 50%;
+
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    --glow-primary: 0 0 20px hsl(186 100% 50% / 0.5);
+    --glow-secondary: 0 0 20px hsl(285 100% 50% / 0.5);
+    --glass-bg: hsl(0 0% 100% / 0.05);
+    --glass-border: hsl(0 0% 100% / 0.1);
+  }
+
+  .dark {
+    --background: 240 40% 3%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 20% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 20% 8%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 186 100% 50%;
+    --primary-foreground: 240 40% 3%;
+
+    --secondary: 285 100% 50%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 10% 15%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 285 100% 50%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 72% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 10% 15%;
+    --input: 240 10% 15%;
+    --ring: 186 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--secondary)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .glow-primary {
+    box-shadow: var(--glow-primary);
+  }
+
+  .glow-secondary {
+    box-shadow: var(--glow-secondary);
+  }
+
+  .gradient-bg {
+    background: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--primary)));
+    background-size: 200% 200%;
+  }
+
+  .animate-gradient {
+    animation: gradientShift 5s ease infinite;
+  }
+
+  .animate-float {
+    animation: floatOrb 10s infinite ease-in-out;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 1.5s infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulseGlow 2s infinite;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 50px); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
