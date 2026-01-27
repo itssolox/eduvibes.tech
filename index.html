@@ -3,274 +3,428 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovaShare - Premium Cloud Sharing</title>
+    <title>Shaikh AK | Secure Cloud Upload</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.1);
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'fade-in': 'fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'slide-down': 'slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideDown: {
+                            '0%': { opacity: '0', height: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', height: 'auto', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
         }
-        .animate-blob { animation: blob 7s infinite; }
-        @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
-        }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-    </style>
-    <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@18.2.0",
-        "react-dom": "https://esm.sh/react-dom@18.2.0",
-        "htm": "https://esm.sh/htm@3.1.1",
-        "lucide-react": "https://esm.sh/lucide-react@0.263.1",
-        "framer-motion": "https://esm.sh/framer-motion@10.12.16",
-        "jszip": "https://esm.sh/jszip@3.10.1",
-        "canvas-confetti": "https://esm.sh/canvas-confetti@1.6.0",
-        "qrcode.react": "https://esm.sh/qrcode.react@3.1.0",
-        "@emailjs/browser": "https://esm.sh/@emailjs/browser@3.11.0"
-      }
-    }
     </script>
+    <style>
+        body {
+            background-color: #020617; /* Slate 950 */
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* Dynamic Background Blobs */
+        .bg-blob { position: absolute; filter: blur(90px); z-index: -1; opacity: 0.5; }
+        .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: #4f46e5; animation-delay: 0s; }
+        .blob-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: #db2777; animation-delay: 2s; }
+
+        /* Glass Panel */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.2), 0 20px 60px -10px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+        /* Loader */
+        .loader-spin {
+            width: 18px; height: 18px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Smooth Hide */
+        .hidden-panel { display: none; }
+    </style>
 </head>
-<body class="bg-slate-50 min-h-screen">
-    <div id="root"></div>
+<body class="min-h-screen flex items-center justify-center p-4 relative overflow-x-hidden">
 
-    <script type="module">
-        import React, { useState, useRef, useCallback, useEffect } from 'react';
-        import ReactDOM from 'react-dom';
-        import htm from 'htm';
-        import * as Lucide from 'lucide-react';
-        import { motion, AnimatePresence } from 'framer-motion';
-        import JSZip from 'jszip';
-        import confetti from 'canvas-confetti';
-        import { QRCodeSVG } from 'qrcode.react';
-        import emailjs from '@emailjs/browser';
+    <div class="bg-blob blob-1 animate-blob rounded-full"></div>
+    <div class="bg-blob blob-2 animate-blob rounded-full"></div>
 
-        const html = htm.bind(React.createElement);
+    <div class="glass-panel w-full max-w-[460px] rounded-3xl p-8 relative overflow-hidden transition-all duration-500" id="appContainer">
+        
+        <div class="text-center mb-8 animate-fade-in">
+            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 mb-4">
+                <i class="fa-solid fa-cloud-arrow-up text-2xl text-indigo-400"></i>
+            </div>
+            <h1 class="text-2xl font-bold tracking-tight text-white">Shaikh AK Share</h1>
+            <p class="text-slate-400 text-xs mt-1 font-medium tracking-wide uppercase">Encrypted • Serverless</p>
+        </div>
 
+        <input type="file" id="fileInput" class="hidden" />
+        <input type="file" id="folderInput" class="hidden" webkitdirectory directory multiple />
+
+        <div id="uploadScreen" class="animate-fade-in">
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <button onclick="document.getElementById('fileInput').click()" 
+                    class="group flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:bg-indigo-500/10 hover:border-indigo-500/50 transition-all duration-300">
+                    <i class="fa-solid fa-file text-indigo-400"></i>
+                    <span class="text-sm font-medium text-slate-300 group-hover:text-white">File</span>
+                </button>
+                <button onclick="document.getElementById('folderInput').click()" 
+                    class="group flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:bg-pink-500/10 hover:border-pink-500/50 transition-all duration-300">
+                    <i class="fa-solid fa-folder text-pink-400"></i>
+                    <span class="text-sm font-medium text-slate-300 group-hover:text-white">Folder</span>
+                </button>
+            </div>
+
+            <div id="dropZone" class="relative border-2 border-dashed border-slate-700 rounded-2xl h-48 flex flex-col items-center justify-center text-center transition-all duration-300 hover:border-indigo-500/50 hover:bg-slate-800/30 cursor-pointer group">
+                <div class="p-4 rounded-full bg-slate-800/50 mb-3 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-solid fa-arrow-up-from-bracket text-2xl text-slate-400 group-hover:text-indigo-400"></i>
+                </div>
+                <p class="text-sm font-medium text-slate-300">Drag & Drop to Upload</p>
+                <p class="text-xs text-slate-500 mt-1">Max file size 100MB</p>
+            </div>
+        </div>
+
+        <div id="progressScreen" class="hidden-panel animate-fade-in py-6">
+            <div class="flex justify-between items-end mb-2">
+                <span id="statusText" class="text-xs font-semibold uppercase tracking-wider text-indigo-400">Processing...</span>
+                <span id="percentText" class="text-sm font-bold text-white">0%</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                <div id="progressBar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-full rounded-full w-0 transition-all duration-150 relative">
+                    <div class="absolute top-0 left-0 bottom-0 right-0 bg-white/20 animate-pulse"></div>
+                </div>
+            </div>
+            <button onclick="cancelUpload()" class="mt-6 w-full py-2 text-xs text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors">
+                Cancel Operation
+            </button>
+        </div>
+
+        <div id="successScreen" class="hidden-panel animate-fade-in">
+            <div class="flex items-center justify-center gap-2 mb-6">
+                <div class="bg-emerald-500/20 text-emerald-400 rounded-full p-1">
+                    <i class="fa-solid fa-check-circle text-xl"></i>
+                </div>
+                <span class="text-lg font-semibold text-white">Upload Complete</span>
+            </div>
+
+            <div class="bg-slate-900/50 border border-slate-700 rounded-xl p-1 mb-4 flex items-center">
+                <div class="pl-3 pr-2 text-slate-500"><i class="fa-solid fa-link text-sm"></i></div>
+                <input type="text" id="resultLink" readonly class="bg-transparent border-none text-xs text-slate-300 w-full focus:ring-0 px-1 py-3 truncate font-mono" value="...">
+                <button onclick="copyLink()" class="bg-slate-700 hover:bg-slate-600 text-white p-2 rounded-lg text-xs font-bold transition-all mx-1 shadow-sm">
+                    Copy
+                </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <a id="downloadBtn" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-indigo-500/20 transition-all">
+                    Open File <i class="fa-solid fa-external-link-alt text-xs opacity-70"></i>
+                </a>
+                
+                <button onclick="toggleQR()" id="qrToggleBtn" class="flex items-center justify-center gap-2 bg-slate-800 border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white py-2.5 rounded-xl text-sm font-medium transition-all">
+                    <i class="fa-solid fa-qrcode"></i> QR Code
+                </button>
+            </div>
+
+            <div id="qrPanel" class="hidden bg-white p-4 rounded-xl mb-4 shadow-xl flex-col items-center justify-center text-center animate-slide-down">
+                <div id="qrcode" class="mb-2"></div>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Scan to Download</p>
+            </div>
+
+            <div class="relative group mb-6">
+                <input type="email" id="emailInput" placeholder="Enter recipient email..." 
+                    class="w-full bg-slate-800/50 border border-slate-700 rounded-full pl-5 pr-24 py-3 text-sm text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all placeholder-slate-500" />
+                
+                <button onclick="sendEmail(this)" 
+                    class="absolute right-1.5 top-1.5 bottom-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-4 rounded-full text-xs font-bold shadow-lg transition-all flex items-center gap-1.5">
+                    Send <i class="fa-regular fa-paper-plane"></i>
+                </button>
+            </div>
+
+            <div class="text-center">
+                <button onclick="resetUI()" class="text-xs text-slate-500 hover:text-indigo-400 transition-colors underline decoration-slate-700 underline-offset-4">
+                    Upload New File
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toastContainer" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col gap-2 z-50 pointer-events-none w-full max-w-sm px-4"></div>
+
+    <script>
         // --- Configuration ---
         const API_ENDPOINT = "https://dash-uploader.rajageminiwala.workers.dev/upload";
-        const EMAILJS_CONFIG = {
-            publicKey: "42J4tgsz_wapBbIjB",
-            serviceId: "service_wghoc5m",
-            templateId: "template_nxaxyec"
+        const EMAILJS_PUBLIC_KEY = "42J4tgsz_wapBbIjB";
+        const EMAILJS_SERVICE_ID = "service_wghoc5m";
+        const EMAILJS_TEMPLATE_ID = "template_nxaxyec";
+
+        // Initialize EmailJS
+        (function(){ emailjs.init(EMAILJS_PUBLIC_KEY); })();
+
+        // --- DOM Elements ---
+        const els = {
+            screens: {
+                upload: document.getElementById('uploadScreen'),
+                progress: document.getElementById('progressScreen'),
+                success: document.getElementById('successScreen'),
+            },
+            inputs: {
+                file: document.getElementById('fileInput'),
+                folder: document.getElementById('folderInput'),
+                email: document.getElementById('emailInput'),
+                link: document.getElementById('resultLink')
+            },
+            display: {
+                dropZone: document.getElementById('dropZone'),
+                progressBar: document.getElementById('progressBar'),
+                statusText: document.getElementById('statusText'),
+                percentText: document.getElementById('percentText'),
+                qr: document.getElementById('qrcode'),
+                qrPanel: document.getElementById('qrPanel'), // New Panel
+                qrBtn: document.getElementById('qrToggleBtn'),
+                downloadBtn: document.getElementById('downloadBtn')
+            }
         };
 
-        const UploadStatus = {
-            IDLE: 'IDLE',
-            COMPRESSING: 'COMPRESSING',
-            UPLOADING: 'UPLOADING',
-            SUCCESS: 'SUCCESS',
-            ERROR: 'ERROR'
-        };
+        let currentXHR = null; 
 
-        // --- Components ---
-        function App() {
-            const [status, setStatus] = useState(UploadStatus.IDLE);
-            const [downloadUrl, setDownloadUrl] = useState('');
-            const [error, setError] = useState('');
-            const [emailRecipient, setEmailRecipient] = useState('');
-            const [isEmailSending, setIsEmailSending] = useState(false);
-            const [isDragging, setIsDragging] = useState(false);
+        // --- Core Logic ---
 
-            const fileInputRef = useRef(null);
-            const folderInputRef = useRef(null);
-
-            useEffect(() => {
-                emailjs.init(EMAILJS_CONFIG.publicKey);
-            }, []);
-
-            const compressFiles = async (files) => {
-                const zip = new JSZip();
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const path = file.webkitRelativePath || file.name;
-                    zip.file(path, file);
-                }
-                const content = await zip.generateAsync({ type: "blob", compression: "DEFLATE" });
-                return new File([content], "archive.zip", { type: "application/zip" });
-            };
-
-            const handleUpload = async (files) => {
-                if (!files || files.length === 0) return;
-                setError('');
-                try {
-                    let fileToUpload;
-                    if (files.length > 1 || files[0].webkitRelativePath) {
-                        setStatus(UploadStatus.COMPRESSING);
-                        fileToUpload = await compressFiles(files);
-                    } else {
-                        fileToUpload = files[0];
-                    }
-
-                    setStatus(UploadStatus.UPLOADING);
-                    const formData = new FormData();
-                    formData.append('file', fileToUpload);
-
-                    const response = await fetch(API_ENDPOINT, { method: 'POST', body: formData });
-                    if (!response.ok) throw new Error('Upload failed');
-
-                    const data = await response.json();
-                    setDownloadUrl(data.downloadUrl);
-                    setStatus(UploadStatus.SUCCESS);
-                    confetti({
-                        particleCount: 150,
-                        spread: 70,
-                        origin: { y: 0.6 },
-                        colors: ['#6366f1', '#a855f7', '#ec4899']
-                    });
-                } catch (err) {
-                    setError(err.message || 'An unexpected error occurred.');
-                    setStatus(UploadStatus.ERROR);
-                }
-            };
-
-            const onDrop = useCallback((e) => {
-                e.preventDefault();
-                setIsDragging(false);
-                if (e.dataTransfer.files) handleUpload(e.dataTransfer.files);
-            }, []);
-
-            const sendEmail = async () => {
-                if (!emailRecipient) return alert('Enter an email address');
-                setIsEmailSending(true);
-                try {
-                    await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
-                        to_email: emailRecipient,
-                        download_link: downloadUrl,
-                        message: `Shared via NovaShare: ${downloadUrl}`
-                    });
-                    alert('Email sent!');
-                    setEmailRecipient('');
-                } catch (err) {
-                    alert('Failed to send email.');
-                } finally {
-                    setIsEmailSending(false);
-                }
-            };
-
-            const reset = () => {
-                setStatus(UploadStatus.IDLE);
-                setDownloadUrl('');
-                setError('');
-            };
-
-            return html`
-                <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
-                    <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-                    <div className="absolute top-0 -right-4 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-                    <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
-                    
-                    <${motion.div} 
-                        initial=${{ opacity: 0, y: 20 }}
-                        animate=${{ opacity: 1, y: 0 }}
-                        className="w-full max-w-xl glass-panel rounded-3xl overflow-hidden z-10"
-                    >
-                        <div className="p-8 md:p-12">
-                            <header className="text-center mb-10">
-                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white mb-6 shadow-lg shadow-indigo-200">
-                                    <${Lucide.CloudUpload} size=${32} />
-                                </div>
-                                <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight">NovaShare</h1>
-                                <p className="text-slate-500 mt-2 font-medium">Secure, Instant & Unlimited</p>
-                            </header>
-
-                            <${AnimatePresence} mode="wait">
-                                ${status === UploadStatus.IDLE && html`
-                                    <${motion.div} key="idle" initial=${{ opacity: 0 }} animate=${{ opacity: 1 }} exit=${{ opacity: 0 }} className="space-y-6">
-                                        <div 
-                                            onDragOver=${(e) => { e.preventDefault(); setIsDragging(true); }}
-                                            onDragLeave=${() => setIsDragging(false)}
-                                            onDrop=${onDrop}
-                                            onClick=${() => fileInputRef.current.click()}
-                                            className=${`border-3 border-dashed rounded-3xl p-12 transition-all duration-300 flex flex-col items-center justify-center cursor-pointer group ${isDragging ? 'border-indigo-500 bg-indigo-50' : 'border-slate-200 hover:border-indigo-400 hover:bg-slate-50'}`}
-                                        >
-                                            <div className="p-5 rounded-full bg-indigo-100 text-indigo-600 mb-4 group-hover:scale-110 transition-transform">
-                                                <${Lucide.Share2} size=${32} />
-                                            </div>
-                                            <p className="text-lg font-semibold text-slate-700">Drop files or folders</p>
-                                            <p className="text-slate-400 text-sm mt-1">Click to browse your device</p>
-                                            <input type="file" ref=${fileInputRef} className="hidden" multiple onChange=${(e) => e.target.files && handleUpload(e.target.files)} />
-                                            <input type="file" ref=${folderInputRef} className="hidden" webkitdirectory="" directory="" multiple onChange=${(e) => e.target.files && handleUpload(e.target.files)} />
-                                        </div>
-                                        <div className="flex gap-4">
-                                            <button onClick=${() => fileInputRef.current.click()} className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-white border border-slate-200 text-slate-700 rounded-2xl font-bold hover:bg-slate-50 shadow-sm transition-all"><${Lucide.File} size=${20} /> Files</button>
-                                            <button onClick=${() => folderInputRef.current.click()} className="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-white border border-slate-200 text-slate-700 rounded-2xl font-bold hover:bg-slate-50 shadow-sm transition-all"><${Lucide.Folder} size=${20} /> Folder</button>
-                                        </div>
-                                    <//>`
-                                }
-
-                                ${(status === UploadStatus.COMPRESSING || status === UploadStatus.UPLOADING) && html`
-                                    <${motion.div} key="loading" initial=${{ opacity: 0 }} animate=${{ opacity: 1 }} className="py-12 flex flex-col items-center justify-center space-y-8">
-                                        <div className="relative">
-                                            <div className="w-24 h-24 border-4 border-indigo-100 rounded-full"></div>
-                                            <${motion.div} className="absolute top-0 left-0 w-24 h-24 border-4 border-t-indigo-600 rounded-full" animate=${{ rotate: 360 }} transition=${{ repeat: Infinity, duration: 1, ease: "linear" }} />
-                                        </div>
-                                        <h3 className="text-xl font-bold text-slate-800">
-                                            ${status === UploadStatus.COMPRESSING ? 'Preparing archive...' : 'Uploading to cloud...'}
-                                        </h3>
-                                    <//>`
-                                }
-
-                                ${status === UploadStatus.SUCCESS && html`
-                                    <${motion.div} key="success" initial=${{ opacity: 0, scale: 0.95 }} animate=${{ opacity: 1, scale: 1 }} className="space-y-6">
-                                        <div className="text-center">
-                                            <div className="inline-flex p-3 bg-emerald-100 text-emerald-600 rounded-full mb-4"><${Lucide.CheckCircle} size=${32} /></div>
-                                            <h3 className="text-2xl font-bold text-slate-800">Success!</h3>
-                                        </div>
-                                        <div className="bg-slate-50 rounded-3xl p-6 border border-slate-100 space-y-6">
-                                            <div className="flex flex-col items-center p-4 bg-white rounded-2xl border border-slate-100">
-                                                <${QRCodeSVG} value=${downloadUrl} size=${140} />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <div className="flex gap-2">
-                                                    <input type="text" readOnly value=${downloadUrl} className="flex-1 bg-white border border-slate-200 text-slate-700 text-sm rounded-xl px-4 py-3 outline-none" />
-                                                    <button onClick=${() => { navigator.clipboard.writeText(downloadUrl); alert('Copied!'); }} className="bg-slate-800 text-white p-3 rounded-xl hover:bg-slate-700 transition-all"><${Lucide.Copy} size=${20} /><//>
-                                                </div>
-                                            </div>
-                                            <a href=${downloadUrl} target="_blank" className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all">
-                                                <${Lucide.Download} size=${20} /> Download Now
-                                            </a>
-                                            <div className="flex gap-2">
-                                                <input placeholder="Share via email" value=${emailRecipient} onChange=${(e) => setEmailRecipient(e.target.value)} className="flex-1 px-4 py-3 bg-white border border-slate-200 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500/20 outline-none" />
-                                                <button onClick=${sendEmail} disabled=${isEmailSending} className="bg-emerald-600 text-white font-bold px-6 rounded-xl hover:bg-emerald-700 transition-all">
-                                                    ${isEmailSending ? html`<${Lucide.Loader2} className="animate-spin" size=${20} />` : 'Send'}
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <button onClick=${reset} className="w-full text-slate-400 hover:text-slate-600 font-bold text-sm flex items-center justify-center gap-2"><${Lucide.RefreshCcw} size=${16} /> New Upload</button>
-                                    <//>`
-                                }
-
-                                ${status === UploadStatus.ERROR && html`
-                                    <${motion.div} key="error" className="py-12 text-center space-y-6">
-                                        <div className="inline-flex p-4 bg-red-100 text-red-600 rounded-full"><${Lucide.AlertCircle} size=${40} /></div>
-                                        <h3 className="text-xl font-bold text-slate-800">Something went wrong</h3>
-                                        <p className="text-red-500">${error}</p>
-                                        <button onClick=${reset} className="bg-slate-800 text-white font-bold px-8 py-3 rounded-2xl">Try Again</button>
-                                    <//>`
-                                }
-                            <//>
-                        </div>
-                        <div className="bg-slate-50/80 px-8 py-4 border-t border-slate-100 flex justify-between items-center text-[10px] uppercase tracking-widest font-bold text-slate-400">
-                            <span>NovaShare Nano v2.5</span>
-                            <span>Serverless Cloud</span>
-                        </div>
-                    <//>
-                </div>
-            `;
+        function switchScreen(screenName) {
+            Object.values(els.screens).forEach(el => el.classList.add('hidden-panel'));
+            els.screens[screenName].classList.remove('hidden-panel');
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(React.createElement(App));
+        async function processFiles(files) {
+            if (files.length === 0) return;
+            switchScreen('progress');
+            resetProgress();
+
+            try {
+                let fileToUpload;
+                if (files.length > 1 || (files[0].webkitRelativePath && files[0].webkitRelativePath.includes('/'))) {
+                    updateStatus("Compressing...", 0);
+                    fileToUpload = await compressFolder(files);
+                } else {
+                    fileToUpload = files[0];
+                }
+                await uploadFile(fileToUpload);
+            } catch (err) {
+                console.error(err);
+                showToast(err.message || "An error occurred", "error");
+                switchScreen('upload');
+            }
+        }
+
+        async function compressFolder(fileList) {
+            const zip = new JSZip();
+            for (let i = 0; i < fileList.length; i++) {
+                zip.file(fileList[i].webkitRelativePath || fileList[i].name, fileList[i]);
+            }
+            return await zip.generateAsync({ type: "blob", compression: "DEFLATE" }, (metadata) => {
+                updateStatus(`Zipping: ${metadata.percent.toFixed(0)}%`, metadata.percent);
+            }).then(content => new File([content], "archive.zip", { type: "application/zip" }));
+        }
+
+        function uploadFile(file) {
+            return new Promise((resolve, reject) => {
+                updateStatus("Uploading...", 0);
+                const formData = new FormData();
+                formData.append('file', file);
+                currentXHR = new XMLHttpRequest();
+                
+                currentXHR.upload.addEventListener("progress", (e) => {
+                    if (e.lengthComputable) {
+                        updateStatus("Uploading...", (e.loaded / e.total) * 100);
+                    }
+                });
+
+                currentXHR.addEventListener("load", () => {
+                    if (currentXHR.status >= 200 && currentXHR.status < 300) {
+                        try {
+                            const res = JSON.parse(currentXHR.responseText);
+                            handleSuccess(res.downloadUrl);
+                            resolve(res);
+                        } catch (e) { reject(new Error("Invalid server response")); }
+                    } else { reject(new Error("Upload failed")); }
+                });
+
+                currentXHR.addEventListener("error", () => reject(new Error("Network error")));
+                currentXHR.addEventListener("abort", () => reject(new Error("Cancelled")));
+                currentXHR.open("POST", API_ENDPOINT);
+                currentXHR.send(formData);
+            });
+        }
+
+        function cancelUpload() {
+            if (currentXHR) {
+                currentXHR.abort();
+                currentXHR = null;
+                showToast("Cancelled", "info");
+                switchScreen('upload');
+            }
+        }
+
+        // --- UI Updates ---
+
+        function updateStatus(text, percent) {
+            els.display.statusText.innerText = text;
+            els.display.percentText.innerText = Math.round(percent) + "%";
+            els.display.progressBar.style.width = percent + "%";
+        }
+
+        function resetProgress() {
+            els.display.progressBar.style.width = "0%";
+            els.display.percentText.innerText = "0%";
+        }
+
+        function handleSuccess(url) {
+            els.inputs.link.value = url;
+            els.display.downloadBtn.href = url;
+            
+            // Generate QR silently but keep hidden
+            els.display.qr.innerHTML = "";
+            new QRCode(els.display.qr, {
+                text: url,
+                width: 120,
+                height: 120,
+                colorDark : "#0f172a",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+            
+            // Hide QR panel initially
+            els.display.qrPanel.classList.add('hidden');
+            els.display.qrPanel.classList.remove('flex');
+            els.display.qrBtn.innerHTML = `<i class="fa-solid fa-qrcode"></i> QR Code`;
+            els.display.qrBtn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
+            els.display.qrBtn.classList.add('bg-slate-800', 'text-slate-300');
+
+            switchScreen('success');
+            showToast("Upload Successful!", "success");
+        }
+
+        function resetUI() {
+            els.inputs.file.value = '';
+            els.inputs.folder.value = '';
+            els.inputs.email.value = '';
+            switchScreen('upload');
+        }
+
+        // --- Features ---
+
+        function toggleQR() {
+            const panel = els.display.qrPanel;
+            const btn = els.display.qrBtn;
+            
+            if (panel.classList.contains('hidden')) {
+                // Show
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
+                // Button Active State
+                btn.innerHTML = `<i class="fa-solid fa-times"></i> Close`;
+                btn.classList.remove('bg-slate-800', 'text-slate-300');
+                btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
+            } else {
+                // Hide
+                panel.classList.add('hidden');
+                panel.classList.remove('flex');
+                // Button Inactive State
+                btn.innerHTML = `<i class="fa-solid fa-qrcode"></i> QR Code`;
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+                btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
+            }
+        }
+
+        function copyLink() {
+            els.inputs.link.select();
+            document.execCommand('copy');
+            showToast("Copied to clipboard", "success");
+        }
+
+        async function sendEmail(btn) {
+            const recipient = els.inputs.email.value.trim();
+            const link = els.inputs.link.value;
+            if (!recipient) return showToast("Enter an email address", "error");
+
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<div class="loader-spin"></div>`;
+
+            try {
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                    to_email: recipient, download_link: link, message: `File Link: ${link}`
+                });
+                showToast("Sent successfully!", "success");
+                els.inputs.email.value = "";
+            } catch (error) { showToast("Failed to send", "error"); } 
+            finally { btn.innerHTML = originalHTML; btn.disabled = false; }
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            const styles = {
+                success: 'bg-emerald-500/90 border-emerald-400',
+                error: 'bg-red-500/90 border-red-400',
+                info: 'bg-slate-700/90 border-slate-600'
+            };
+            
+            toast.className = `${styles[type]} backdrop-blur-sm border text-white px-4 py-3 rounded-xl shadow-lg flex items-center justify-between gap-3 text-sm font-medium animate-fade-in transition-all`;
+            toast.innerHTML = `<span>${message}</span> <i class="fa-solid fa-xmark cursor-pointer opacity-70 hover:opacity-100" onclick="this.parentElement.remove()"></i>`;
+            
+            document.getElementById('toastContainer').appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // --- Event Listeners ---
+        els.inputs.file.addEventListener('change', e => processFiles(e.target.files));
+        els.inputs.folder.addEventListener('change', e => processFiles(e.target.files));
+
+        const dz = els.display.dropZone;
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(n => dz.addEventListener(n, e => {e.preventDefault();e.stopPropagation()}, false));
+        ['dragenter', 'dragover'].forEach(n => dz.addEventListener(n, () => dz.classList.add('border-indigo-500', 'bg-slate-800/50'), false));
+        ['dragleave', 'drop'].forEach(n => dz.addEventListener(n, () => dz.classList.remove('border-indigo-500', 'bg-slate-800/50'), false));
+        dz.addEventListener('drop', e => processFiles(e.dataTransfer.files));
     </script>
 </body>
 </html>
