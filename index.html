@@ -294,7 +294,8 @@
         async function loadRecentFiles() {
             try {
                 els.display.recentList.innerHTML = `<div class="flex justify-center py-4"><div class="loader-spin border-indigo-500 border-top-transparent"></div></div>`;
-                const response = await fetch(`${WORKER_URL}/history`);
+                // Add a timestamp query parameter to bust the cache
+                const response = await fetch(`${WORKER_URL}/history?t=${new Date().getTime()}`);
                 if (response.ok) {
                     recentFiles = await response.json();
                     renderRecentFiles();
