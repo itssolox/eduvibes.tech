@@ -41,42 +41,16 @@
         }
     </script>
     <style>
-        body {
-            background-color: #020617; /* Slate 950 */
-            color: #f8fafc;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        /* Dynamic Background Blobs */
+        body { background-color: #020617; color: #f8fafc; font-family: 'Inter', sans-serif; }
         .bg-blob { position: absolute; filter: blur(90px); z-index: -1; opacity: 0.5; }
         .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: #4f46e5; animation-delay: 0s; }
         .blob-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: #db2777; animation-delay: 2s; }
-
-        /* Glass Panel */
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 1px rgba(0,0,0,0.2), 0 20px 60px -10px rgba(0, 0, 0, 0.6);
-        }
-
-        /* Custom Scrollbar */
+        .glass-panel { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 0 0 1px rgba(0,0,0,0.2), 0 20px 60px -10px rgba(0, 0, 0, 0.6); }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-
-        /* Loader */
-        .loader-spin {
-            width: 18px; height: 18px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
+        .loader-spin { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* Smooth Hide */
         .hidden-panel { display: none; }
     </style>
 </head>
@@ -147,16 +121,13 @@
             <div class="bg-slate-900/50 border border-slate-700 rounded-xl p-1 mb-4 flex items-center">
                 <div class="pl-3 pr-2 text-slate-500"><i class="fa-solid fa-link text-sm"></i></div>
                 <input type="text" id="resultLink" readonly class="bg-transparent border-none text-xs text-slate-300 w-full focus:ring-0 px-1 py-3 truncate font-mono" value="...">
-                <button onclick="copyLink()" class="bg-slate-700 hover:bg-slate-600 text-white p-2 rounded-lg text-xs font-bold transition-all mx-1 shadow-sm">
-                    Copy
-                </button>
+                <button onclick="copyLink()" class="bg-slate-700 hover:bg-slate-600 text-white p-2 rounded-lg text-xs font-bold transition-all mx-1 shadow-sm">Copy</button>
             </div>
 
             <div class="grid grid-cols-2 gap-3 mb-4">
                 <a id="downloadBtn" href="#" target="_blank" class="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-indigo-500/20 transition-all">
                     Open File <i class="fa-solid fa-external-link-alt text-xs opacity-70"></i>
                 </a>
-                
                 <button onclick="toggleQR()" id="qrToggleBtn" class="flex items-center justify-center gap-2 bg-slate-800 border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white py-2.5 rounded-xl text-sm font-medium transition-all">
                     <i class="fa-solid fa-qrcode"></i> QR Code
                 </button>
@@ -170,7 +141,6 @@
             <div class="relative group mb-6">
                 <input type="email" id="emailInput" placeholder="Enter recipient email..." 
                     class="w-full bg-slate-800/50 border border-slate-700 rounded-full pl-5 pr-24 py-3 text-sm text-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all placeholder-slate-500" />
-                
                 <button onclick="sendEmail(this)" 
                     class="absolute right-1.5 top-1.5 bottom-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-4 rounded-full text-xs font-bold shadow-lg transition-all flex items-center gap-1.5">
                     Send <i class="fa-regular fa-paper-plane"></i>
@@ -188,13 +158,15 @@
     <div class="glass-panel w-full max-w-[460px] rounded-3xl p-6 mt-4 relative overflow-hidden transition-all duration-500 z-10 animate-fade-in" style="animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards;">
         <div class="flex items-center justify-between mb-4">
             <h2 class="text-sm font-bold text-slate-300 flex items-center gap-2">
-                <i class="fa-solid fa-clock-rotate-left text-indigo-400"></i> Recent Uploads
+                <i class="fa-solid fa-earth-americas text-indigo-400"></i> Global Recent Uploads
             </h2>
-            <button onclick="clearRecent()" class="text-[10px] text-slate-500 hover:text-red-400 uppercase tracking-wider font-bold transition-colors">Clear</button>
+            <button onclick="loadRecentFiles()" class="text-[10px] text-slate-500 hover:text-indigo-400 uppercase tracking-wider font-bold transition-colors">
+                <i class="fa-solid fa-rotate-right"></i> Refresh
+            </button>
         </div>
         
         <div id="recentUploadsList" class="flex flex-col gap-2 max-h-40 overflow-y-auto pr-2">
-            <p class="text-xs text-slate-500 text-center py-4 italic">No recent uploads yet</p>
+            <p class="text-xs text-slate-500 text-center py-4 italic">Loading recent uploads...</p>
         </div>
     </div>
 
@@ -202,48 +174,25 @@
 
     <script>
         // --- Configuration ---
-        const API_ENDPOINT = "https://dash-uploader.rajageminiwala.workers.dev/upload";
+        const WORKER_URL = "https://dash-uploader.rajageminiwala.workers.dev";
         const EMAILJS_PUBLIC_KEY = "42J4tgsz_wapBbIjB";
         const EMAILJS_SERVICE_ID = "service_wghoc5m";
         const EMAILJS_TEMPLATE_ID = "template_nxaxyec";
-        const RECENT_UPLOADS_KEY = "ak_recent_uploads";
 
-        // Initialize EmailJS
         (function(){ emailjs.init(EMAILJS_PUBLIC_KEY); })();
 
-        // --- DOM Elements ---
         const els = {
-            screens: {
-                upload: document.getElementById('uploadScreen'),
-                progress: document.getElementById('progressScreen'),
-                success: document.getElementById('successScreen'),
-            },
-            inputs: {
-                file: document.getElementById('fileInput'),
-                folder: document.getElementById('folderInput'),
-                email: document.getElementById('emailInput'),
-                link: document.getElementById('resultLink')
-            },
-            display: {
-                dropZone: document.getElementById('dropZone'),
-                progressBar: document.getElementById('progressBar'),
-                statusText: document.getElementById('statusText'),
-                percentText: document.getElementById('percentText'),
-                qr: document.getElementById('qrcode'),
-                qrPanel: document.getElementById('qrPanel'),
-                qrBtn: document.getElementById('qrToggleBtn'),
-                downloadBtn: document.getElementById('downloadBtn'),
-                recentList: document.getElementById('recentUploadsList')
-            }
+            screens: { upload: document.getElementById('uploadScreen'), progress: document.getElementById('progressScreen'), success: document.getElementById('successScreen') },
+            inputs: { file: document.getElementById('fileInput'), folder: document.getElementById('folderInput'), email: document.getElementById('emailInput'), link: document.getElementById('resultLink') },
+            display: { dropZone: document.getElementById('dropZone'), progressBar: document.getElementById('progressBar'), statusText: document.getElementById('statusText'), percentText: document.getElementById('percentText'), qr: document.getElementById('qrcode'), qrPanel: document.getElementById('qrPanel'), qrBtn: document.getElementById('qrToggleBtn'), downloadBtn: document.getElementById('downloadBtn'), recentList: document.getElementById('recentUploadsList') }
         };
 
         let currentXHR = null; 
         let recentFiles = [];
 
-        // --- Initialize ---
+        // Load recents on startup
         loadRecentFiles();
 
-        // --- Core Logic ---
         function switchScreen(screenName) {
             Object.values(els.screens).forEach(el => el.classList.add('hidden-panel'));
             els.screens[screenName].classList.remove('hidden-panel');
@@ -253,7 +202,6 @@
             if (files.length === 0) return;
             switchScreen('progress');
             resetProgress();
-
             try {
                 let fileToUpload;
                 if (files.length > 1 || (files[0].webkitRelativePath && files[0].webkitRelativePath.includes('/'))) {
@@ -288,16 +236,14 @@
                 currentXHR = new XMLHttpRequest();
                 
                 currentXHR.upload.addEventListener("progress", (e) => {
-                    if (e.lengthComputable) {
-                        updateStatus("Uploading...", (e.loaded / e.total) * 100);
-                    }
+                    if (e.lengthComputable) updateStatus("Uploading...", (e.loaded / e.total) * 100);
                 });
 
                 currentXHR.addEventListener("load", () => {
                     if (currentXHR.status >= 200 && currentXHR.status < 300) {
                         try {
                             const res = JSON.parse(currentXHR.responseText);
-                            handleSuccess(res.downloadUrl, file.name); // Pass filename for Recents
+                            handleSuccess(res.downloadUrl);
                             resolve(res);
                         } catch (e) { reject(new Error("Invalid server response")); }
                     } else { reject(new Error("Upload failed")); }
@@ -305,21 +251,14 @@
 
                 currentXHR.addEventListener("error", () => reject(new Error("Network error")));
                 currentXHR.addEventListener("abort", () => reject(new Error("Cancelled")));
-                currentXHR.open("POST", API_ENDPOINT);
+                currentXHR.open("POST", `${WORKER_URL}/upload`);
                 currentXHR.send(formData);
             });
         }
 
         function cancelUpload() {
-            if (currentXHR) {
-                currentXHR.abort();
-                currentXHR = null;
-                showToast("Cancelled", "info");
-                switchScreen('upload');
-            }
+            if (currentXHR) { currentXHR.abort(); currentXHR = null; showToast("Cancelled", "info"); switchScreen('upload'); }
         }
-
-        // --- UI Updates & Recents Logic ---
 
         function updateStatus(text, percent) {
             els.display.statusText.innerText = text;
@@ -332,73 +271,46 @@
             els.display.percentText.innerText = "0%";
         }
 
-        function handleSuccess(url, fileName) {
+        function handleSuccess(url) {
             els.inputs.link.value = url;
             els.display.downloadBtn.href = url;
             
-            // Add to Recents
-            addRecentFile(fileName, url);
-
-            // Generate QR silently
             els.display.qr.innerHTML = "";
-            new QRCode(els.display.qr, {
-                text: url, width: 120, height: 120,
-                colorDark : "#0f172a", colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
+            new QRCode(els.display.qr, { text: url, width: 120, height: 120, colorDark: "#0f172a", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
             
-            // Reset QR panel UI
-            els.display.qrPanel.classList.add('hidden');
-            els.display.qrPanel.classList.remove('flex');
+            els.display.qrPanel.classList.add('hidden'); els.display.qrPanel.classList.remove('flex');
             els.display.qrBtn.innerHTML = `<i class="fa-solid fa-qrcode"></i> QR Code`;
             els.display.qrBtn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
             els.display.qrBtn.classList.add('bg-slate-800', 'text-slate-300');
 
             switchScreen('success');
             showToast("Upload Successful!", "success");
+
+            // Refresh the global history list after 1 second to ensure worker saved it
+            setTimeout(() => { loadRecentFiles(); }, 1000);
         }
 
-        // ---- RECENT FILES FUNCTIONS ----
-        function loadRecentFiles() {
+        // ---- GLOBAL RECENT FILES FUNCTIONS ----
+        async function loadRecentFiles() {
             try {
-                const stored = localStorage.getItem(RECENT_UPLOADS_KEY);
-                if (stored) {
-                    recentFiles = JSON.parse(stored);
+                els.display.recentList.innerHTML = `<div class="flex justify-center py-4"><div class="loader-spin border-indigo-500 border-top-transparent"></div></div>`;
+                const response = await fetch(`${WORKER_URL}/history`);
+                if (response.ok) {
+                    recentFiles = await response.json();
                     renderRecentFiles();
-                }
-            } catch (e) { console.error("Failed to load recents", e); }
-        }
-
-        function addRecentFile(name, url) {
-            const newFile = {
-                name: name,
-                url: url,
-                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' })
-            };
-            
-            // Add to front, keep only last 10
-            recentFiles.unshift(newFile);
-            if (recentFiles.length > 10) recentFiles.pop();
-            
-            localStorage.setItem(RECENT_UPLOADS_KEY, JSON.stringify(recentFiles));
-            renderRecentFiles();
-        }
-
-        function clearRecent() {
-            recentFiles = [];
-            localStorage.removeItem(RECENT_UPLOADS_KEY);
-            renderRecentFiles();
-            showToast("Recent history cleared", "info");
+                } else { throw new Error("Failed to fetch"); }
+            } catch (e) { 
+                console.error("Failed to load global recents", e); 
+                els.display.recentList.innerHTML = `<p class="text-xs text-red-400 text-center py-4">Failed to load history</p>`;
+            }
         }
 
         function copyRecentLink(url) {
-            navigator.clipboard.writeText(url).then(() => {
-                showToast("Copied to clipboard", "success");
-            });
+            navigator.clipboard.writeText(url).then(() => { showToast("Copied to clipboard", "success"); });
         }
 
         function renderRecentFiles() {
-            if (recentFiles.length === 0) {
+            if (!recentFiles || recentFiles.length === 0) {
                 els.display.recentList.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 italic">No recent uploads yet</p>`;
                 return;
             }
@@ -427,78 +339,49 @@
         }
 
         function resetUI() {
-            els.inputs.file.value = '';
-            els.inputs.folder.value = '';
-            els.inputs.email.value = '';
+            els.inputs.file.value = ''; els.inputs.folder.value = ''; els.inputs.email.value = '';
             switchScreen('upload');
         }
 
-        // --- Features ---
-
         function toggleQR() {
-            const panel = els.display.qrPanel;
-            const btn = els.display.qrBtn;
-            
+            const panel = els.display.qrPanel; const btn = els.display.qrBtn;
             if (panel.classList.contains('hidden')) {
                 panel.classList.remove('hidden'); panel.classList.add('flex');
                 btn.innerHTML = `<i class="fa-solid fa-times"></i> Close`;
-                btn.classList.remove('bg-slate-800', 'text-slate-300');
-                btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
+                btn.classList.remove('bg-slate-800', 'text-slate-300'); btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
             } else {
                 panel.classList.add('hidden'); panel.classList.remove('flex');
                 btn.innerHTML = `<i class="fa-solid fa-qrcode"></i> QR Code`;
-                btn.classList.add('bg-slate-800', 'text-slate-300');
-                btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
+                btn.classList.add('bg-slate-800', 'text-slate-300'); btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
             }
         }
 
         function copyLink() {
-            els.inputs.link.select();
-            document.execCommand('copy');
-            showToast("Copied to clipboard", "success");
+            els.inputs.link.select(); document.execCommand('copy'); showToast("Copied to clipboard", "success");
         }
 
         async function sendEmail(btn) {
-            const recipient = els.inputs.email.value.trim();
-            const link = els.inputs.link.value;
+            const recipient = els.inputs.email.value.trim(); const link = els.inputs.link.value;
             if (!recipient) return showToast("Enter an email address", "error");
-
-            const originalHTML = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = `<div class="loader-spin"></div>`;
-
+            const originalHTML = btn.innerHTML; btn.disabled = true; btn.innerHTML = `<div class="loader-spin"></div>`;
             try {
-                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                    to_email: recipient, download_link: link, message: `File Link: ${link}`
-                });
-                showToast("Sent successfully!", "success");
-                els.inputs.email.value = "";
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { to_email: recipient, download_link: link, message: `File Link: ${link}` });
+                showToast("Sent successfully!", "success"); els.inputs.email.value = "";
             } catch (error) { showToast("Failed to send", "error"); } 
             finally { btn.innerHTML = originalHTML; btn.disabled = false; }
         }
 
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
-            const styles = {
-                success: 'bg-emerald-500/90 border-emerald-400',
-                error: 'bg-red-500/90 border-red-400',
-                info: 'bg-slate-700/90 border-slate-600'
-            };
-            
+            const styles = { success: 'bg-emerald-500/90 border-emerald-400', error: 'bg-red-500/90 border-red-400', info: 'bg-slate-700/90 border-slate-600' };
             toast.className = `${styles[type]} backdrop-blur-sm border text-white px-4 py-3 rounded-xl shadow-lg flex items-center justify-between gap-3 text-sm font-medium animate-fade-in transition-all`;
             toast.innerHTML = `<span>${message}</span> <i class="fa-solid fa-xmark cursor-pointer opacity-70 hover:opacity-100" onclick="this.parentElement.remove()"></i>`;
-            
             document.getElementById('toastContainer').appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
         }
 
-        // --- Event Listeners ---
         els.inputs.file.addEventListener('change', e => processFiles(e.target.files));
         els.inputs.folder.addEventListener('change', e => processFiles(e.target.files));
-
         const dz = els.display.dropZone;
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(n => dz.addEventListener(n, e => {e.preventDefault();e.stopPropagation()}, false));
         ['dragenter', 'dragover'].forEach(n => dz.addEventListener(n, () => dz.classList.add('border-indigo-500', 'bg-slate-800/50'), false));
