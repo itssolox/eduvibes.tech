@@ -294,7 +294,7 @@
         async function loadRecentFiles() {
             try {
                 els.display.recentList.innerHTML = `<div class="flex justify-center py-4"><div class="loader-spin border-indigo-500 border-top-transparent"></div></div>`;
-                // Add a timestamp query parameter to bust the cache
+                // Added a timestamp query parameter to completely bust browser caching
                 const response = await fetch(`${WORKER_URL}/history?t=${new Date().getTime()}`);
                 if (response.ok) {
                     recentFiles = await response.json();
@@ -307,7 +307,7 @@
         }
 
         function copyRecentLink(url) {
-            navigator.clipboard.writeText(url).then(() => { showToast("Copied to clipboard", "success"); });
+            navigator.clipboard.writeText(url).then(() => { showToast("Copied to clipboard", "success"); }).catch(() => showToast("Failed to copy", "error"));
         }
 
         function renderRecentFiles() {
@@ -357,8 +357,12 @@
             }
         }
 
+        // Updated to use the modern clipboard API
         function copyLink() {
-            els.inputs.link.select(); document.execCommand('copy'); showToast("Copied to clipboard", "success");
+            els.inputs.link.select();
+            navigator.clipboard.writeText(els.inputs.link.value)
+                .then(() => showToast("Copied to clipboard", "success"))
+                .catch(() => showToast("Failed to copy", "error"));
         }
 
         async function sendEmail(btn) {
