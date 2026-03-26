@@ -80,12 +80,12 @@
         .hidden-panel { display: none; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 relative overflow-x-hidden">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-x-hidden">
 
     <div class="bg-blob blob-1 animate-blob rounded-full"></div>
     <div class="bg-blob blob-2 animate-blob rounded-full"></div>
 
-    <div class="glass-panel w-full max-w-[460px] rounded-3xl p-8 relative overflow-hidden transition-all duration-500" id="appContainer">
+    <div class="glass-panel w-full max-w-[460px] rounded-3xl p-8 relative overflow-hidden transition-all duration-500 z-10" id="appContainer">
         
         <div class="text-center mb-8 animate-fade-in">
             <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 mb-4">
@@ -183,7 +183,19 @@
                 </button>
             </div>
         </div>
+    </div>
 
+    <div class="glass-panel w-full max-w-[460px] rounded-3xl p-6 mt-4 relative overflow-hidden transition-all duration-500 z-10 animate-fade-in" style="animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards;">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-bold text-slate-300 flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left text-indigo-400"></i> Recent Uploads
+            </h2>
+            <button onclick="clearRecent()" class="text-[10px] text-slate-500 hover:text-red-400 uppercase tracking-wider font-bold transition-colors">Clear</button>
+        </div>
+        
+        <div id="recentUploadsList" class="flex flex-col gap-2 max-h-40 overflow-y-auto pr-2">
+            <p class="text-xs text-slate-500 text-center py-4 italic">No recent uploads yet</p>
+        </div>
     </div>
 
     <div id="toastContainer" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col gap-2 z-50 pointer-events-none w-full max-w-sm px-4"></div>
@@ -194,6 +206,7 @@
         const EMAILJS_PUBLIC_KEY = "42J4tgsz_wapBbIjB";
         const EMAILJS_SERVICE_ID = "service_wghoc5m";
         const EMAILJS_TEMPLATE_ID = "template_nxaxyec";
+        const RECENT_UPLOADS_KEY = "ak_recent_uploads";
 
         // Initialize EmailJS
         (function(){ emailjs.init(EMAILJS_PUBLIC_KEY); })();
@@ -217,16 +230,20 @@
                 statusText: document.getElementById('statusText'),
                 percentText: document.getElementById('percentText'),
                 qr: document.getElementById('qrcode'),
-                qrPanel: document.getElementById('qrPanel'), // New Panel
+                qrPanel: document.getElementById('qrPanel'),
                 qrBtn: document.getElementById('qrToggleBtn'),
-                downloadBtn: document.getElementById('downloadBtn')
+                downloadBtn: document.getElementById('downloadBtn'),
+                recentList: document.getElementById('recentUploadsList')
             }
         };
 
         let currentXHR = null; 
+        let recentFiles = [];
+
+        // --- Initialize ---
+        loadRecentFiles();
 
         // --- Core Logic ---
-
         function switchScreen(screenName) {
             Object.values(els.screens).forEach(el => el.classList.add('hidden-panel'));
             els.screens[screenName].classList.remove('hidden-panel');
@@ -280,7 +297,7 @@
                     if (currentXHR.status >= 200 && currentXHR.status < 300) {
                         try {
                             const res = JSON.parse(currentXHR.responseText);
-                            handleSuccess(res.downloadUrl);
+                            handleSuccess(res.downloadUrl, file.name); // Pass filename for Recents
                             resolve(res);
                         } catch (e) { reject(new Error("Invalid server response")); }
                     } else { reject(new Error("Upload failed")); }
@@ -302,7 +319,7 @@
             }
         }
 
-        // --- UI Updates ---
+        // --- UI Updates & Recents Logic ---
 
         function updateStatus(text, percent) {
             els.display.statusText.innerText = text;
@@ -315,22 +332,22 @@
             els.display.percentText.innerText = "0%";
         }
 
-        function handleSuccess(url) {
+        function handleSuccess(url, fileName) {
             els.inputs.link.value = url;
             els.display.downloadBtn.href = url;
             
-            // Generate QR silently but keep hidden
+            // Add to Recents
+            addRecentFile(fileName, url);
+
+            // Generate QR silently
             els.display.qr.innerHTML = "";
             new QRCode(els.display.qr, {
-                text: url,
-                width: 120,
-                height: 120,
-                colorDark : "#0f172a",
-                colorLight : "#ffffff",
+                text: url, width: 120, height: 120,
+                colorDark : "#0f172a", colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
             });
             
-            // Hide QR panel initially
+            // Reset QR panel UI
             els.display.qrPanel.classList.add('hidden');
             els.display.qrPanel.classList.remove('flex');
             els.display.qrBtn.innerHTML = `<i class="fa-solid fa-qrcode"></i> QR Code`;
@@ -339,6 +356,74 @@
 
             switchScreen('success');
             showToast("Upload Successful!", "success");
+        }
+
+        // ---- RECENT FILES FUNCTIONS ----
+        function loadRecentFiles() {
+            try {
+                const stored = localStorage.getItem(RECENT_UPLOADS_KEY);
+                if (stored) {
+                    recentFiles = JSON.parse(stored);
+                    renderRecentFiles();
+                }
+            } catch (e) { console.error("Failed to load recents", e); }
+        }
+
+        function addRecentFile(name, url) {
+            const newFile = {
+                name: name,
+                url: url,
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' })
+            };
+            
+            // Add to front, keep only last 10
+            recentFiles.unshift(newFile);
+            if (recentFiles.length > 10) recentFiles.pop();
+            
+            localStorage.setItem(RECENT_UPLOADS_KEY, JSON.stringify(recentFiles));
+            renderRecentFiles();
+        }
+
+        function clearRecent() {
+            recentFiles = [];
+            localStorage.removeItem(RECENT_UPLOADS_KEY);
+            renderRecentFiles();
+            showToast("Recent history cleared", "info");
+        }
+
+        function copyRecentLink(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                showToast("Copied to clipboard", "success");
+            });
+        }
+
+        function renderRecentFiles() {
+            if (recentFiles.length === 0) {
+                els.display.recentList.innerHTML = `<p class="text-xs text-slate-500 text-center py-4 italic">No recent uploads yet</p>`;
+                return;
+            }
+
+            els.display.recentList.innerHTML = recentFiles.map((file, idx) => `
+                <div class="group flex items-center justify-between bg-slate-800/40 border border-slate-700/50 p-3 rounded-xl hover:bg-slate-800/80 transition-colors animate-slide-down" style="animation-delay: ${idx * 0.05}s">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg flex-shrink-0">
+                            <i class="fa-solid ${file.name.endsWith('.zip') ? 'fa-file-zipper' : 'fa-file'}"></i>
+                        </div>
+                        <div class="flex flex-col truncate pr-2">
+                            <span class="text-xs font-semibold text-slate-200 truncate">${file.name}</span>
+                            <span class="text-[10px] text-slate-500">${file.date}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="copyRecentLink('${file.url}')" class="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors" title="Copy Link">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                        <a href="${file.url}" target="_blank" class="p-2 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-500/10 rounded-lg transition-colors" title="Open File">
+                            <i class="fa-solid fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function resetUI() {
@@ -355,18 +440,12 @@
             const btn = els.display.qrBtn;
             
             if (panel.classList.contains('hidden')) {
-                // Show
-                panel.classList.remove('hidden');
-                panel.classList.add('flex');
-                // Button Active State
+                panel.classList.remove('hidden'); panel.classList.add('flex');
                 btn.innerHTML = `<i class="fa-solid fa-times"></i> Close`;
                 btn.classList.remove('bg-slate-800', 'text-slate-300');
                 btn.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
             } else {
-                // Hide
-                panel.classList.add('hidden');
-                panel.classList.remove('flex');
-                // Button Inactive State
+                panel.classList.add('hidden'); panel.classList.remove('flex');
                 btn.innerHTML = `<i class="fa-solid fa-qrcode"></i> QR Code`;
                 btn.classList.add('bg-slate-800', 'text-slate-300');
                 btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
