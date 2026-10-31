@@ -511,10 +511,10 @@
       <!-- SOURCE CODE CARD -->
       <div id="p1-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -527,54 +527,45 @@
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 1: Simple reflex agent - two-room Vacuum Cleaner World.
-Run: python pract1.py
-Edit LOCATION and ROOMS in main() to change the example.
-The agent sees ONLY (current location, current room status).
-The simulation, not the reflex agent, stops when both rooms are clean.
-&quot;&quot;&quot;
+          <pre><code># Practical 1: Simple Reflex Agent - Vacuum Cleaner World
 
-
+# Decision function for the reflex agent based on current percept
 def reflex_agent(location, status):
-    if status == &quot;Dirty&quot;:
-        return &quot;Suck&quot;
-    if location == &quot;A&quot;:
-        return &quot;Right&quot;
-    return &quot;Left&quot;
+    if status == &quot;Dirty&quot;:                     # If current room is dirty
+        return &quot;Suck&quot;                         # Action: clean the room
+    elif location == &quot;A&quot;:                     # If room A is clean
+        return &quot;Right&quot;                        # Action: move to room B
+    else:                                     # If room B is clean
+        return &quot;Left&quot;                         # Action: move to room A
 
-
-def simulate(location, rooms):
-    if location not in (&quot;A&quot;, &quot;B&quot;):
-        raise ValueError(&quot;Location must be A or B.&quot;)
-    if set(rooms) != {&quot;A&quot;, &quot;B&quot;} or any(
-        value not in (&quot;Clean&quot;, &quot;Dirty&quot;) for value in rooms.values()
-    ):
-        raise ValueError(&quot;Both rooms must have status Clean or Dirty.&quot;)
-    rooms = rooms.copy()  # Do not change the caller&#x27;s dictionary.
-    history = []
-    while &quot;Dirty&quot; in rooms.values():
-        action = reflex_agent(location, rooms[location])
-        history.append((location, rooms[location], action))
-        if action == &quot;Suck&quot;:
-            rooms[location] = &quot;Clean&quot;
-        elif action == &quot;Right&quot;:
-            location = &quot;B&quot;
-        else:
-            location = &quot;A&quot;
-    return rooms, history
-
-
+# Main simulation function
 def main():
-    LOCATION = &quot;A&quot;
-    ROOMS = {&quot;A&quot;: &quot;Dirty&quot;, &quot;B&quot;: &quot;Dirty&quot;}
-    print(&quot;Initial:&quot;, ROOMS, &quot;Location:&quot;, LOCATION)
-    final, history = simulate(LOCATION, ROOMS)
-    for step, (location, status, action) in enumerate(history, 1):
+    location = &quot;A&quot;                            # Start location of the agent
+    rooms = {&quot;A&quot;: &quot;Dirty&quot;, &quot;B&quot;: &quot;Dirty&quot;}      # Initial status of rooms A and B
+    
+    print(f&quot;Initial: {rooms} Location: {location}&quot;)
+    step = 1                                  # Step counter
+    
+    # Loop until both rooms are clean
+    while &quot;Dirty&quot; in rooms.values():
+        status = rooms[location]              # Sense dirt in the current room
+        action = reflex_agent(location, status) # Decide action using rules
+        
         print(f&quot;{step}. At {location}, status={status}: {action}&quot;)
-    print(&quot;Final:&quot;, final)
-    print(&quot;Actions:&quot;, len(history))
+        
+        # Apply the chosen action
+        if action == &quot;Suck&quot;:
+            rooms[location] = &quot;Clean&quot;         # Clean the current room
+        elif action == &quot;Right&quot;:
+            location = &quot;B&quot;                    # Move to Room B
+        elif action == &quot;Left&quot;:
+            location = &quot;A&quot;                    # Move to Room A
+            
+        step += 1                             # Increment step count
+        
+    print(f&quot;Final: {rooms}&quot;)
+    print(f&quot;Actions: {step - 1}&quot;)
     print(&quot;Simulation stopped: both rooms are clean.&quot;)
-
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -809,7 +800,7 @@ Simulation stopped: both rooms are clean.</div>
         </div>
         
         <ul>
-  <li><strong>Model-Based Architecture:</strong> To handle partial observability, the agent maintains an internal world model (<code>self.model</code>) tracking discovered free cells, obstacles, and unexplored cells (<code>?</code>).</li>
+  <li><strong>Model-Based Architecture:</strong> To handle partial observability, the agent maintains an internal world model (<code>model</code>) tracking discovered free cells, obstacles, and unexplored cells (<code>?</code>).</li>
   <li><strong>Unknown Cell Safety:</strong> Cells marked <code>?</code> are never traversed by the planner until confirmed safe/free by local sensing.</li>
   <li><strong>Dual-Stage Planning:</strong> The agent first runs BFS on known free cells to plan to the Goal <code>G</code>. If the goal is not yet reachable through known territory, it plans to the nearest reachable unvisited free cell to explore.</li>
   <li><strong>BFS Guarantee:</strong> On an unweighted grid, BFS finds the shortest route across known free cells to the selected sub-target.</li>
@@ -844,10 +835,10 @@ Simulation stopped: both rooms are clean.</div>
       <!-- SOURCE CODE CARD -->
       <div id="p2-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -860,102 +851,114 @@ Simulation stopped: both rooms are clean.</div>
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 2: Model-based grid agent with local sensing and BFS planning.
-Run: python pract2.py
-Edit GRID in main(): S=start, G=goal, .=free, X=obstacle.
-Sensor reveals the current cell and four neighbours (manual&#x27;s extension).
-BFS uses ONLY the remembered map. Unknown &#x27;?&#x27; cells are never traversed.
-Explore a reachable unvisited cell when the goal is not yet reachable in the map.
-Assumptions: static grid, known dimensions and goal coordinates, reliable sensing.
-&quot;&quot;&quot;
-from collections import deque
+          <pre><code># Practical 2: Model-Based Agent - Grid Navigation with Local Sensing &amp; BFS
+from collections import deque                 # Import deque for fast BFS queue operations
 
-DIRECTIONS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+# Movement directions: (row change, col change)
+DIRECTIONS = [(-1, 0), (1, 0), (0, -1), (0, 1)] # Up, Down, Left, Right
 
+# The actual real-world environment (obstacles hidden from agent initially)
+GRID = [
+    [&quot;S&quot;, &quot;.&quot;, &quot;.&quot;, &quot;X&quot;, &quot;.&quot;],
+    [&quot;.&quot;, &quot;X&quot;, &quot;.&quot;, &quot;X&quot;, &quot;.&quot;],
+    [&quot;.&quot;, &quot;X&quot;, &quot;.&quot;, &quot;.&quot;, &quot;.&quot;],
+    [&quot;.&quot;, &quot;.&quot;, &quot;.&quot;, &quot;X&quot;, &quot;.&quot;],
+    [&quot;X&quot;, &quot;X&quot;, &quot;.&quot;, &quot;.&quot;, &quot;G&quot;]
+]
 
-class ModelBasedAgent:
-    def __init__(self, grid):
-        if not grid or not grid[0] or any(len(row) != len(grid[0]) for row in grid):
-            raise ValueError(&quot;Grid must be a nonempty rectangle.&quot;)
-        if any(cell not in &quot;.XSG&quot; for row in grid for cell in row):
-            raise ValueError(&quot;Use only ., X, S and G.&quot;)
-        self.environment = grid
-        self.rows, self.cols = len(grid), len(grid[0])
-        starts = [(r, c) for r in range(self.rows) for c in range(self.cols)
-                  if grid[r][c] == &quot;S&quot;]
-        goals = [(r, c) for r in range(self.rows) for c in range(self.cols)
-                 if grid[r][c] == &quot;G&quot;]
-        if len(starts) != 1 or len(goals) != 1:
-            raise ValueError(&quot;Provide exactly one S and one G.&quot;)
-        self.position, self.goal = starts[0], goals[0]
-        self.model = [[&quot;?&quot;] * self.cols for _ in range(self.rows)]
-        self.visited = set()
-        self.path = [self.position]
+ROWS = len(GRID)                              # Number of rows in grid
+COLS = len(GRID[0])                           # Number of columns in grid
 
-    def neighbours(self, position):
-        r, c = position
-        for dr, dc in DIRECTIONS:
-            nr, nc = r + dr, c + dc
-            if 0 &lt;= nr &lt; self.rows and 0 &lt;= nc &lt; self.cols:
-                yield nr, nc
+# Find coordinates of Start (S) and Goal (G)
+for r in range(ROWS):
+    for c in range(COLS):
+        if GRID[r][c] == &quot;S&quot;:
+            start_pos = (r, c)                # Starting position (0, 0)
+        elif GRID[r][c] == &quot;G&quot;:
+            goal_pos = (r, c)                 # Goal position (4, 4)
 
-    def sense(self):
-        # Only this method reads actual cell contents from the environment.
-        for r, c in [self.position] + list(self.neighbours(self.position)):
-            self.model[r][c] = self.environment[r][c]
-        self.visited.add(self.position)
+# Agent&#x27;s internal memory/map - initialized with &#x27;?&#x27; (unseen)
+model = [[&quot;?&quot; for _ in range(COLS)] for _ in range(ROWS)]
+visited = set()                               # Set to remember visited positions
+path = []                                     # List to record the actual path taken
 
-    def plan(self, targets):
-        queue = deque([self.position])
-        parent = {self.position: None}
-        while queue:
-            current = queue.popleft()
-            if current in targets:
-                path = []
-                while current is not None:
-                    path.append(current)
-                    current = parent[current]
-                return path[::-1]
-            for nr, nc in self.neighbours(current):
-                nxt = (nr, nc)
-                if self.model[nr][nc] in &quot;.SG&quot; and nxt not in parent:
-                    parent[nxt] = current
-                    queue.append(nxt)
-        return None
+# Function to get valid in-bounds neighbours of a cell
+def get_neighbours(r, c):
+    neighbours = []                           # List to hold valid neighbours
+    for dr, dc in DIRECTIONS:                 # Check all 4 directions
+        nr, nc = r + dr, c + dc               # Calculate new row and col
+        if 0 &lt;= nr &lt; ROWS and 0 &lt;= nc &lt; COLS: # Check within grid boundaries
+            neighbours.append((nr, nc))       # Add valid coordinate
+    return neighbours                         # Return neighbours list
 
-    def run(self):
-        self.sense()
-        while self.position != self.goal:
-            route = self.plan({self.goal})
-            if route is None:
-                unexplored = {(r, c) for r in range(self.rows)
-                              for c in range(self.cols)
-                              if self.model[r][c] in &quot;.SG&quot;
-                              and (r, c) not in self.visited}
-                route = self.plan(unexplored)
-            if route is None:
-                return False
-            # Follow a safe route; sense and replan after reaching its target.
-            for position in route[1:]:
-                self.position = position
-                self.path.append(position)
-                self.sense()
-                if position == self.goal:
-                    return True
-        return True
+# Sense the current cell and its 4 neighbours to update internal model
+def sense(r, c):
+    model[r][c] = GRID[r][c]                  # Sense current cell
+    for nr, nc in get_neighbours(r, c):       # Look around at adjacent cells
+        model[nr][nc] = GRID[nr][nc]          # Update model with sensed cell
 
+# BFS pathfinding using ONLY known free cells in agent&#x27;s model
+def bfs(start, targets):
+    queue = deque([start])                    # Queue storing cells to explore
+    parent = {start: None}                    # Dictionary to trace back path
+    
+    while queue:                              # Loop while queue has items
+        curr = queue.popleft()                # Pop front cell (FIFO)
+        if curr in targets:                   # If cell is one of our target cells
+            route = []                        # List to reconstruct the route
+            while curr is not None:           # Follow parent pointers backward
+                route.append(curr)            # Add cell to route
+                curr = parent[curr]           # Move to predecessor
+            return route[::-1]                # Reverse to get start -&gt; target route
+            
+        for nxt in get_neighbours(curr[0], curr[1]): # Check all 4 neighbours
+            nr, nc = nxt                      # Unpack coordinates
+            # Move only through cells known to be safe (not &#x27;X&#x27; and not &#x27;?&#x27;)
+            if model[nr][nc] in (&quot;.&quot;, &quot;S&quot;, &quot;G&quot;) and nxt not in parent:
+                parent[nxt] = curr            # Save parent link
+                queue.append(nxt)             # Enqueue for exploration
+    return None                               # Return None if no route found
 
 def main():
-    GRID = [&quot;S..X.&quot;, &quot;.X.X.&quot;, &quot;.X...&quot;, &quot;...X.&quot;, &quot;XX..G&quot;]
-    agent = ModelBasedAgent(GRID)
-    reached = agent.run()
-    print(&quot;Goal reached!&quot; if reached else &quot;No route: reachable area exhausted.&quot;)
-    print(&quot;Actual travel path:&quot;, agent.path)
-    print(&quot;Moves:&quot;, len(agent.path) - 1)
+    curr_pos = start_pos                      # Place agent at start
+    path.append(curr_pos)                     # Record start in travel path
+    visited.add(curr_pos)                     # Mark start as visited
+    sense(curr_pos[0], curr_pos[1])           # Initial local sensing
+    
+    # Loop until the agent reaches the goal
+    while curr_pos != goal_pos:
+        # Step 1: Try planning directly to the goal
+        route = bfs(curr_pos, {goal_pos})
+        
+        # Step 2: If goal not reachable yet, find nearest unvisited known free cell to explore
+        if route is None:
+            unexplored = []                   # Collect known free cells not visited yet
+            for r in range(ROWS):
+                for c in range(COLS):
+                    if model[r][c] in (&quot;.&quot;, &quot;S&quot;, &quot;G&quot;) and (r, c) not in visited:
+                        unexplored.append((r, c)) # Add candidate exploration cell
+            route = bfs(curr_pos, set(unexplored)) # Plan route to nearest exploration cell
+            
+        # Step 3: If still no route, goal is completely unreachable
+        if route is None:
+            print(&quot;No route: reachable area exhausted.&quot;)
+            return
+            
+        # Step 4: Step along the route, sense new cells after each move
+        for next_step in route[1:]:           # Walk through planned path
+            curr_pos = next_step              # Update agent position
+            path.append(curr_pos)             # Record in travel history
+            visited.add(curr_pos)             # Mark cell as visited
+            sense(curr_pos[0], curr_pos[1])   # Sense new surroundings
+            if curr_pos == goal_pos:          # Check if goal reached
+                break                         # Stop walking if at goal
+                
+    print(&quot;Goal reached!&quot;)
+    print(f&quot;Actual travel path: {path}&quot;)
+    print(f&quot;Moves: {len(path) - 1}&quot;)
     print(&quot;Remembered map (? = unseen):&quot;)
-    for row in agent.model:
-        print(&quot; &quot;.join(row))
-
+    for row in model:
+        print(&quot; &quot;.join(row))                  # Print final remembered grid
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -1195,7 +1198,7 @@ X X . . G</div>
   <li>Initialize priority queue (min-heap) with <code>(f=h(start), g=0, start)</code>.</li>
   <li>Initialize <code>best_g = {start: 0}</code> and <code>parent = {start: (None, 'START')}</code>.</li>
   <li>While frontier is not empty:</li>
-  <li>&nbsp;&nbsp;a. Pop state with lowest <code>f</code>. If <code>g != best_g[current]</code>, discard stale entry.</li>
+  <li>&nbsp;&nbsp;a. Pop state with lowest <code>f</code>. If <code>g &gt; best_g[current]</code>, discard stale entry.</li>
   <li>&nbsp;&nbsp;b. If <code>current == goal</code>, reconstruct solution path and return.</li>
   <li>&nbsp;&nbsp;c. Increment expanded node counter.</li>
   <li>&nbsp;&nbsp;d. Generate legal blank swaps (UP, DOWN, LEFT, RIGHT).</li>
@@ -1215,10 +1218,10 @@ X X . . G</div>
       <!-- SOURCE CODE CARD -->
       <div id="p3-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -1231,94 +1234,104 @@ X X . . G</div>
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 3: A* for the 8-puzzle using Manhattan distance.
-Run: python pract3.py
-Edit START/GOAL in main(). Use each number 0..8 once; 0 is blank.
-Move labels describe the BLANK, not the tile. Unit cost per move.
-&quot;&quot;&quot;
-import heapq
+          <pre><code># Practical 3: Informed Search - A* Algorithm for 8-Puzzle Problem
+import heapq                                  # Import heapq for priority queue (min-heap)
 
+# Check if puzzle state is solvable using inversion count
+def is_solvable(state):
+    tiles = [x for x in state if x != 0]      # Filter out the blank tile (0)
+    inversions = 0                            # Count of inversions
+    for i in range(len(tiles)):               # Compare every pair of tiles
+        for j in range(i + 1, len(tiles)):
+            if tiles[i] &gt; tiles[j]:           # If a larger number appears before smaller
+                inversions += 1               # Count as an inversion
+    return inversions % 2 == 0                # Must have even inversions for standard goal
 
-def validate(state):
-    if len(state) != 9 or set(state) != set(range(9)):
-        raise ValueError(&quot;A board must contain 0 through 8 exactly once.&quot;)
+# Calculate Manhattan distance heuristic: sum of distances of tiles to goal positions
+def manhattan_distance(state, goal_pos):
+    distance = 0                              # Initialize total distance
+    for index, tile in enumerate(state):      # Iterate over all 9 positions
+        if tile != 0:                         # Do not calculate for the blank tile (0)
+            r, c = divmod(index, 3)           # Current row and column (index // 3, index % 3)
+            gr, gc = goal_pos[tile]           # Goal row and column for this tile
+            distance += abs(r - gr) + abs(c - gc) # Add horizontal and vertical distance
+    return distance                           # Return total heuristic value h(n)
 
+# Generate valid next states by moving the blank tile (0)
+def get_neighbours(state):
+    neighbours = []                           # List to store (new_state, move_name)
+    blank = state.index(0)                    # Find index position of blank tile (0)
+    r, c = divmod(blank, 3)                   # Convert index to row and column
+    
+    # 4 possible directions to slide the blank: (name, dr, dc)
+    moves = [(&quot;UP&quot;, -1, 0), (&quot;DOWN&quot;, 1, 0), (&quot;LEFT&quot;, 0, -1), (&quot;RIGHT&quot;, 0, 1)]
+    
+    for move_name, dr, dc in moves:           # Check each direction
+        nr, nc = r + dr, c + dc               # Target position for blank
+        if 0 &lt;= nr &lt; 3 and 0 &lt;= nc &lt; 3:       # Ensure move is within 3x3 board
+            new_blank = nr * 3 + nc           # Convert row and col back to 1D index
+            board = list(state)               # Convert tuple to mutable list
+            board[blank], board[new_blank] = board[new_blank], board[blank] # Swap tiles
+            neighbours.append((tuple(board), move_name)) # Save new board configuration
+    return neighbours                         # Return list of reachable neighbours
 
-def parity(state):
-    tiles = [x for x in state if x != 0]
-    return sum(tiles[i] &gt; tiles[j] for i in range(len(tiles))
-               for j in range(i + 1, len(tiles))) % 2
-
-
-def neighbours(state):
-    blank = state.index(0)
-    r, c = divmod(blank, 3)
-    for name, dr, dc in [(&quot;UP&quot;, -1, 0), (&quot;DOWN&quot;, 1, 0),
-                         (&quot;LEFT&quot;, 0, -1), (&quot;RIGHT&quot;, 0, 1)]:
-        nr, nc = r + dr, c + dc
-        if 0 &lt;= nr &lt; 3 and 0 &lt;= nc &lt; 3:
-            board = list(state)
-            other = nr * 3 + nc
-            board[blank], board[other] = board[other], board[blank]
-            yield tuple(board), name
-
-
-def manhattan(state, goal_positions):
-    total = 0
-    for i, tile in enumerate(state):
-        if tile != 0:  # Do not count the blank.
-            r, c = divmod(i, 3)
-            gr, gc = goal_positions[tile]
-            total += abs(r - gr) + abs(c - gc)
-    return total
-
-
+# A* Search algorithm implementation
 def astar(start, goal):
-    validate(start)
-    validate(goal)
-    if parity(start) != parity(goal):
+    if not is_solvable(start):                # Check solvability before searching
+        print(&quot;No solution: initial and goal inversion parities differ.&quot;)
         return None, 0
-    positions = {tile: divmod(i, 3) for i, tile in enumerate(goal)}
-    frontier = [(manhattan(start, positions), 0, start)]  # (f, g, state)
-    best_g = {start: 0}
-    parent = {start: (None, &quot;START&quot;)}
-    expanded = 0
-    while frontier:
-        _, g, current = heapq.heappop(frontier)
-        if g != best_g[current]:  # Discard an old, more expensive entry.
+        
+    goal_pos = {tile: divmod(i, 3) for i, tile in enumerate(goal)} # Precompute goal (r, c)
+    
+    # Min-heap priority queue stores: (f_score, g_cost, state)
+    frontier = []
+    initial_h = manhattan_distance(start, goal_pos) # Heuristic estimate for start
+    heapq.heappush(frontier, (initial_h, 0, start)) # Push start state with f = 0 + h
+    
+    best_g = {start: 0}                       # Stores lowest g-cost found for each state
+    parent = {start: (None, &quot;START&quot;)}         # Stores parent state and action taken
+    expanded_nodes = 0                        # Count of nodes expanded
+    
+    while frontier:                           # Loop until priority queue is empty
+        f, g, current = heapq.heappop(frontier) # Pop state with the lowest f = g + h
+        
+        if g &gt; best_g.get(current, float(&quot;inf&quot;)): # Skip if we already found a cheaper route
             continue
-        if current == goal:
-            path = []
-            while current is not None:
-                previous, action = parent[current]
-                path.append((current, action))
-                current = previous
-            return path[::-1], expanded
-        expanded += 1  # States whose successors are generated; excludes goal.
-        for nxt, action in neighbours(current):
-            new_g = g + 1
-            if new_g &lt; best_g.get(nxt, float(&quot;inf&quot;)):
-                best_g[nxt] = new_g
-                parent[nxt] = (current, action)
-                f = new_g + manhattan(nxt, positions)
-                heapq.heappush(frontier, (f, new_g, nxt))
-    return None, expanded
-
+            
+        if current == goal:                   # Check if goal board is reached
+            path = []                         # List to reconstruct the solution path
+            while current is not None:        # Follow parent pointers back to start
+                prev_state, action = parent[current] # Get predecessor and action
+                path.append((current, action)) # Add to path
+                current = prev_state          # Move backward
+            return path[::-1], expanded_nodes # Reverse path to get START -&gt; GOAL
+            
+        expanded_nodes += 1                   # Increment expanded nodes count
+        
+        for next_state, action in get_neighbours(current): # Explore legal moves
+            new_g = g + 1                     # Each move has a cost of 1
+            if new_g &lt; best_g.get(next_state, float(&quot;inf&quot;)): # If a shorter route is found
+                best_g[next_state] = new_g    # Record the new cheapest g-cost
+                parent[next_state] = (current, action) # Record parent and action
+                h = manhattan_distance(next_state, goal_pos) # Compute heuristic h
+                new_f = new_g + h             # Compute total evaluation f = g + h
+                heapq.heappush(frontier, (new_f, new_g, next_state)) # Push to priority queue
+                
+    return None, expanded_nodes               # Return None if no solution found
 
 def main():
-    START = (1, 2, 3, 5, 6, 0, 7, 8, 4)
-    GOAL = (1, 2, 3, 4, 5, 6, 7, 8, 0)
-    path, expanded = astar(START, GOAL)
-    if path is None:
-        print(&quot;No solution: initial and goal inversion parities differ.&quot;)
-        return
-    for step, (board, action) in enumerate(path):
-        print(f&quot;Step {step}: {action}&quot;)
-        for i in range(0, 9, 3):
-            print(*board[i:i + 3])
-    print(&quot;Moves:&quot;, len(path) - 1)
-    print(&quot;Nodes expanded (excluding goal):&quot;, expanded)
-
+    START = (1, 2, 3, 5, 6, 0, 7, 8, 4)       # Initial board configuration (0 is blank)
+    GOAL = (1, 2, 3, 4, 5, 6, 7, 8, 0)        # Target goal board configuration
+    
+    path, expanded = astar(START, GOAL)       # Execute A* Search
+    
+    if path:
+        for step, (board, action) in enumerate(path): # Print each step in the solution
+            print(f&quot;Step {step}: {action}&quot;)   # Print step number and move taken
+            for i in range(0, 9, 3):          # Print board as a 3x3 grid
+                print(board[i], board[i+1], board[i+2])
+        print(f&quot;Moves: {len(path) - 1}&quot;)      # Print total steps taken
+        print(f&quot;Nodes expanded (excluding goal): {expanded}&quot;)
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -1630,9 +1643,9 @@ Nodes expanded (excluding goal): 91</div>
       <div id="p4-algorithm" class="card-section">
         <h2 class="section-heading">Step-by-Step Algorithm & Dry Run</h2>
         <ol>
-  <li>Validate that the leaf array length is a non-zero power of 2, and compute <code>depth = count.bit_length() - 1</code>.</li>
-  <li><strong>Minimax(leaves, depth, index, maximizing):</strong><br>If depth is 0, return <code>leaves[index]</code>. Recurse on left child <code>2*index</code> and right child <code>2*index+1</code>. Return <code>max()</code> if maximizing else <code>min()</code>.</li>
-  <li><strong>AlphaBeta(leaves, depth, index, maximizing, &alpha;, &beta;):</strong><br>If depth is 0, return <code>leaves[index]</code>.<br>For each child in (2*index, 2*index+1):<br>&nbsp;&nbsp;Recurse and obtain child score.<br>&nbsp;&nbsp;If maximizing: update value = max(value, score), &alpha; = max(&alpha;, value).<br>&nbsp;&nbsp;If minimizing: update value = min(value, score), &beta; = min(&beta;, value).<br>&nbsp;&nbsp;If <code>&alpha; &ge; &beta;</code>: break (prune remaining siblings).<br>Return value.</li>
+  <li>Define terminal leaf scores in power-of-2 array, and calculate tree depth.</li>
+  <li><strong>Minimax(leaves, depth, index, is_maximizing):</strong><br>If depth is 0, return <code>leaves[index]</code>. Recurse on left child <code>2*index</code> and right child <code>2*index+1</code>. Return <code>max()</code> if maximizing else <code>min()</code>.</li>
+  <li><strong>AlphaBeta(leaves, depth, index, is_maximizing, &alpha;, &beta;):</strong><br>If depth is 0, return <code>leaves[index]</code>.<br>For each child in (2*index, 2*index+1):<br>&nbsp;&nbsp;Recurse and obtain child score.<br>&nbsp;&nbsp;If maximizing: update value = max(value, score), &alpha; = max(&alpha;, value).<br>&nbsp;&nbsp;If minimizing: update value = min(value, score), &beta; = min(&beta;, value).<br>&nbsp;&nbsp;If <code>&alpha; &ge; &beta;</code>: break (prune remaining siblings).<br>Return value.</li>
 </ol>
         
         <h3 style="font-size:1.05rem; margin-top:1.25rem; margin-bottom:0.6rem; color:var(--text-main);">Step-by-Step Execution Trace (Dry Run)</h3>
@@ -1648,10 +1661,10 @@ Nodes expanded (excluding goal): 91</div>
       <!-- SOURCE CODE CARD -->
       <div id="p4-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -1664,61 +1677,80 @@ Nodes expanded (excluding goal): 91</div>
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 4: Minimax versus Alpha-Beta pruning on a binary game tree.
-Run: python pract4.py
-Edit LEAVES in main(): its length must be a power of 2 (1, 2, 4, 8, 16...).
-MAX moves at the root. Count every visited node, including leaves and root.
-&quot;&quot;&quot;
+          <pre><code># Practical 4: Adversarial Search - Minimax vs. Alpha-Beta Pruning on a Game Tree
 
+# Global node counters to measure search effort
+minimax_nodes = 0                             # Tracks total nodes visited by Minimax
+alphabeta_nodes = 0                           # Tracks total nodes visited by Alpha-Beta
 
-def minimax(leaves, depth, index, maximizing, stats):
-    stats[&quot;nodes&quot;] += 1
-    if depth == 0:
-        return leaves[index]
-    left = minimax(leaves, depth - 1, 2 * index, not maximizing, stats)
-    right = minimax(leaves, depth - 1, 2 * index + 1, not maximizing, stats)
-    return max(left, right) if maximizing else min(left, right)
+# Standard Minimax algorithm without pruning
+def minimax(leaves, depth, index, is_maximizing):
+    global minimax_nodes                      # Access global counter
+    minimax_nodes += 1                        # Count current node visit
+    
+    if depth == 0:                            # Base case: reached a leaf node
+        return leaves[index]                  # Return the static utility score
+        
+    left_child = 2 * index                    # Index of left child in binary tree
+    right_child = 2 * index + 1               # Index of right child in binary tree
+    
+    if is_maximizing:                         # MAX&#x27;s turn: maximize the score
+        left_val = minimax(leaves, depth - 1, left_child, False)   # Recurse on left child
+        right_val = minimax(leaves, depth - 1, right_child, False) # Recurse on right child
+        return max(left_val, right_val)       # MAX chooses the highest value
+    else:                                     # MIN&#x27;s turn: minimize the score
+        left_val = minimax(leaves, depth - 1, left_child, True)    # Recurse on left child
+        right_val = minimax(leaves, depth - 1, right_child, True)  # Recurse on right child
+        return min(left_val, right_val)       # MIN chooses the lowest value
 
-
-def alphabeta(leaves, depth, index, maximizing, alpha, beta, stats):
-    stats[&quot;nodes&quot;] += 1
-    if depth == 0:
-        return leaves[index]
-    value = float(&quot;-inf&quot;) if maximizing else float(&quot;inf&quot;)
-    for child in (2 * index, 2 * index + 1):
-        score = alphabeta(leaves, depth - 1, child, not maximizing,
-                          alpha, beta, stats)
-        if maximizing:
-            value = max(value, score)
-            alpha = max(alpha, value)
-        else:
-            value = min(value, score)
-            beta = min(beta, value)
-        if alpha &gt;= beta:
-            break  # Remaining children cannot change the root decision.
-    return value
-
-
-def compare(leaves):
-    count = len(leaves)
-    if count == 0 or count &amp; (count - 1):
-        raise ValueError(&quot;The number of leaves must be a power of 2.&quot;)
-    depth = count.bit_length() - 1
-    mm, ab = {&quot;nodes&quot;: 0}, {&quot;nodes&quot;: 0}
-    a = minimax(leaves, depth, 0, True, mm)
-    b = alphabeta(leaves, depth, 0, True, float(&quot;-inf&quot;), float(&quot;inf&quot;), ab)
-    return a, b, mm[&quot;nodes&quot;], ab[&quot;nodes&quot;]
-
+# Alpha-Beta Pruning algorithm
+def alphabeta(leaves, depth, index, is_maximizing, alpha, beta):
+    global alphabeta_nodes                    # Access global counter
+    alphabeta_nodes += 1                      # Count current node visit
+    
+    if depth == 0:                            # Base case: reached a leaf node
+        return leaves[index]                  # Return the static utility score
+        
+    left_child = 2 * index                    # Index of left child in binary tree
+    right_child = 2 * index + 1               # Index of right child in binary tree
+    
+    if is_maximizing:                         # MAX&#x27;s turn: maximize the score
+        best_val = float(&quot;-inf&quot;)              # Initialize best value to negative infinity
+        for child in (left_child, right_child): # Evaluate both children
+            val = alphabeta(leaves, depth - 1, child, False, alpha, beta) # Recurse
+            best_val = max(best_val, val)     # Update best value found so far
+            alpha = max(alpha, best_val)      # Update alpha threshold for MAX
+            if alpha &gt;= beta:                 # Pruning condition: beta cutoff!
+                break                         # Skip exploring remaining siblings
+        return best_val                       # Return MAX&#x27;s optimal score
+    else:                                     # MIN&#x27;s turn: minimize the score
+        best_val = float(&quot;inf&quot;)               # Initialize best value to positive infinity
+        for child in (left_child, right_child): # Evaluate both children
+            val = alphabeta(leaves, depth - 1, child, True, alpha, beta) # Recurse
+            best_val = min(best_val, val)     # Update best value found so far
+            beta = min(beta, best_val)        # Update beta threshold for MIN
+            if alpha &gt;= beta:                 # Pruning condition: alpha cutoff!
+                break                         # Skip exploring remaining siblings
+        return best_val                       # Return MIN&#x27;s optimal score
 
 def main():
+    # 16 terminal leaf scores in left-to-right order
     LEAVES = [6, 8, 0, 5, 8, 9, 1, 1, 3, 5, 2, 9, 0, 9, 6, 5]
-    a, b, mm_nodes, ab_nodes = compare(LEAVES)
-    print(&quot;Leaves:&quot;, LEAVES)
-    print(f&quot;Minimax: value={a}, nodes visited={mm_nodes}&quot;)
-    print(f&quot;Alpha-Beta: value={b}, nodes visited={ab_nodes}&quot;)
-    saved = mm_nodes - ab_nodes
-    print(f&quot;Nodes avoided: {saved} ({100 * saved / mm_nodes:.1f}%)&quot;)
-
+    depth = 4                                 # Tree depth (2^4 = 16 leaves)
+    
+    # Run Minimax starting from root (index 0, maximizing=True)
+    mm_score = minimax(LEAVES, depth, 0, True)
+    
+    # Run Alpha-Beta starting from root with alpha=-inf, beta=+inf
+    ab_score = alphabeta(LEAVES, depth, 0, True, float(&quot;-inf&quot;), float(&quot;inf&quot;))
+    
+    saved_nodes = minimax_nodes - alphabeta_nodes # Calculate pruned nodes
+    savings_pct = (saved_nodes / minimax_nodes) * 100 # Calculate percentage savings
+    
+    print(f&quot;Leaves: {LEAVES}&quot;)
+    print(f&quot;Minimax: value={mm_score}, nodes visited={minimax_nodes}&quot;)
+    print(f&quot;Alpha-Beta: value={ab_score}, nodes visited={alphabeta_nodes}&quot;)
+    print(f&quot;Nodes avoided: {saved_nodes} ({savings_pct:.1f}%)&quot;)
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -1996,10 +2028,10 @@ Nodes avoided: 13 (41.9%)</div>
       <!-- SOURCE CODE CARD -->
       <div id="p5-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -2012,68 +2044,82 @@ Nodes avoided: 13 (41.9%)</div>
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 5: Tower of Hanoi by BFS STATE-SPACE SEARCH.
-Run: python pract5.py
-Edit N in main(); use small values (e.g. 0 to 5) for BFS practice.
-A state is (pegA, pegB, pegC); each peg is a tuple, bottom to top.
-This is deliberately BFS, not the usual direct recursive Hanoi algorithm.
-&quot;&quot;&quot;
-from collections import deque
+          <pre><code># Practical 5: Tower of Hanoi Problem - BFS State-Space Search
+from collections import deque                 # Import deque for FIFO queue operations
 
-
-def successors(state):
-    for source in range(3):
-        if not state[source]:
+# Generate all legal moves from the current state
+def get_successors(state):
+    successors = []                           # List to store (next_state, action_description)
+    peg_names = (&quot;A&quot;, &quot;B&quot;, &quot;C&quot;)               # Peg labels
+    
+    for src in range(3):                      # Try each peg as source peg
+        if not state[src]:                    # If source peg has no disks, skip it
             continue
-        disk = state[source][-1]
-        for target in range(3):
-            if source == target:
+            
+        disk = state[src][-1]                 # Get topmost disk from source peg
+        
+        for dest in range(3):                 # Try each peg as destination peg
+            if src == dest:                   # Cannot move a disk to the same peg
                 continue
-            if state[target] and state[target][-1] &lt; disk:
+                
+            # Rule: Cannot place a larger disk on top of a smaller disk
+            if state[dest] and state[dest][-1] &lt; disk:
                 continue
-            pegs = [list(peg) for peg in state]
-            pegs[source].pop()
-            pegs[target].append(disk)
-            nxt = tuple(tuple(peg) for peg in pegs)
-            action = f&quot;Disk {disk}: {&#x27;ABC&#x27;[source]} -&gt; {&#x27;ABC&#x27;[target]}&quot;
-            yield nxt, action
+                
+            # Create a modifiable copy of the pegs
+            new_pegs = [list(peg) for peg in state]
+            new_pegs[src].pop()               # Remove disk from source peg
+            new_pegs[dest].append(disk)       # Place disk onto destination peg
+            
+            # Convert back to immutable tuple of tuples for dictionary hashing
+            next_state = tuple(tuple(peg) for peg in new_pegs)
+            action = f&quot;Disk {disk}: {peg_names[src]} -&gt; {peg_names[dest]}&quot;
+            successors.append((next_state, action)) # Save legal transition
+            
+    return successors                         # Return all valid next configurations
 
-
-def hanoi_bfs(n):
-    if n &lt; 0:
-        raise ValueError(&quot;Number of disks cannot be negative.&quot;)
-    disks = tuple(range(n, 0, -1))
-    start, goal = (disks, (), ()), ((), (), disks)
-    queue = deque([start])
-    parent = {start: (None, &quot;START&quot;)}  # Also acts as visited collection.
-    expanded = 0
-    while queue:
-        current = queue.popleft()
-        if current == goal:
-            path = []
-            while current is not None:
-                previous, action = parent[current]
-                path.append((current, action))
-                current = previous
-            return path[::-1], expanded
-        expanded += 1
-        for nxt, action in successors(current):
-            if nxt not in parent:
-                parent[nxt] = (current, action)
-                queue.append(nxt)
-    return None, expanded
-
+# BFS search to find the shortest move sequence
+def solve_hanoi(n):
+    start_disks = tuple(range(n, 0, -1))      # Disks from largest (n) to smallest (1)
+    start_state = (start_disks, (), ())       # All disks initially on Peg A
+    goal_state = ((), (), start_disks)        # All disks finally on Peg C
+    
+    queue = deque([start_state])              # FIFO queue initialized with start state
+    parent = {start_state: (None, &quot;START&quot;)}   # Tracks visited states and predecessors
+    expanded_count = 0                        # Count of expanded states
+    
+    while queue:                              # Loop until queue is empty
+        curr = queue.popleft()                # Pop oldest state (BFS exploration)
+        
+        if curr == goal_state:                # If goal configuration is reached
+            path = []                         # Reconstruct solution path
+            while curr is not None:           # Follow parent pointers backward
+                prev_state, action = parent[curr]
+                path.append((curr, action))   # Record state and action
+                curr = prev_state             # Step back to parent
+            return path[::-1], expanded_count # Return reversed path (START -&gt; GOAL)
+            
+        expanded_count += 1                   # Increment expanded states counter
+        
+        for next_state, action in get_successors(curr): # Explore legal moves
+            if next_state not in parent:      # If not visited yet
+                parent[next_state] = (curr, action) # Mark visited and record parent
+                queue.append(next_state)      # Enqueue state for future expansion
+                
+    return None, expanded_count               # Return None if no path found
 
 def main():
-    N = 3
-    path, expanded = hanoi_bfs(N)
-    for step, (state, action) in enumerate(path):
-        print(f&quot;Step {step}: {action}&quot;)
-        print(&quot;  &quot;.join(f&quot;{name}: {list(peg)}&quot; for name, peg in zip(&quot;ABC&quot;, state)))
-    print(&quot;Moves:&quot;, len(path) - 1)
-    print(&quot;Theoretical minimum:&quot;, 2 ** N - 1)
-    print(&quot;Nodes expanded (excluding goal):&quot;, expanded)
-
+    N = 3                                     # Number of disks
+    path, expanded = solve_hanoi(N)           # Solve using BFS
+    
+    if path:
+        for step, (state, action) in enumerate(path): # Print each step
+            print(f&quot;Step {step}: {action}&quot;)   # Print action description
+            print(&quot;  &quot;.join(f&quot;{name}: {list(peg)}&quot; for name, peg in zip(&quot;ABC&quot;, state)))
+            
+        print(f&quot;Moves: {len(path) - 1}&quot;)      # Print total steps taken
+        print(f&quot;Theoretical minimum: {2 ** N - 1}&quot;) # Print formula 2^N - 1
+        print(f&quot;Nodes expanded (excluding goal): {expanded}&quot;)
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -2326,10 +2372,9 @@ Nodes expanded (excluding goal): 24</div>
       <div id="p6-algorithm" class="card-section">
         <h2 class="section-heading">Step-by-Step Algorithm & Dry Run</h2>
         <ol>
-  <li>Validate 9x9 dimensions and verify that initial clues contain no duplicate digits in any row, column, or 3x3 box.</li>
   <li>Compute legal candidate digits for any cell: <code>DIGITS - (used_row | used_col | used_box)</code>.</li>
   <li><strong>propagate(board):</strong> Repeatedly scan all empty cells. If any has 0 candidates, return False (contradiction). If a cell has 1 candidate, assign it and continue. When no single-candidate cells remain, return True.</li>
-  <li><strong>search(board):</strong><br>&nbsp;&nbsp;a. If improved mode: run <code>propagate()</code>; if contradiction, return None.<br>&nbsp;&nbsp;b. Find all empty cells. If none remain, return board (solved).<br>&nbsp;&nbsp;c. In improved mode: select cell with <code>min(candidates)</code> (MRV). In plain mode: select first empty cell.<br>&nbsp;&nbsp;d. For each candidate value: create board copy, set value, recurse. If valid, return solution.<br>&nbsp;&nbsp;e. Backtrack and return None.</li>
+  <li><strong>solve(board, use_mrv):</strong><br>&nbsp;&nbsp;a. If improved mode: run <code>propagate()</code>; if contradiction, return None.<br>&nbsp;&nbsp;b. Find all empty cells. If none remain, return board (solved).<br>&nbsp;&nbsp;c. In improved mode: select cell with <code>min(candidates)</code> (MRV). In plain mode: select first empty cell.<br>&nbsp;&nbsp;d. For each candidate value: create board copy, set value, recurse. If valid, return solution.<br>&nbsp;&nbsp;e. Backtrack and return None.</li>
 </ol>
         
         <h3 style="font-size:1.05rem; margin-top:1.25rem; margin-bottom:0.6rem; color:var(--text-main);">Step-by-Step Execution Trace (Dry Run)</h3>
@@ -2345,10 +2390,10 @@ Nodes expanded (excluding goal): 24</div>
       <!-- SOURCE CODE CARD -->
       <div id="p6-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -2361,107 +2406,101 @@ Nodes expanded (excluding goal): 24</div>
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 6: Sudoku - backtracking, candidate propagation and MRV.
-Run: python pract6.py
-Edit PUZZLE in main(): nine rows of nine digits, 0 means empty.
-Compare plain backtracking with repeated single-candidate propagation + MRV.
-Returns the first solution; it does not prove that a puzzle has only one solution.
-&quot;&quot;&quot;
-DIGITS = set(range(1, 10))
+          <pre><code># Practical 6: Sudoku Solver - Backtracking &amp; Constraint Propagation (MRV)
 
+ALL_DIGITS = set(range(1, 10))                # Digits 1 to 9
 
-def validate(board):
-    if len(board) != 9 or any(len(row) != 9 for row in board):
-        raise ValueError(&quot;Provide a 9 x 9 board.&quot;)
-    if any(value not in range(10) for row in board for value in row):
-        raise ValueError(&quot;Use only integers 0 to 9.&quot;)
-    units = list(board)
-    units += [[board[r][c] for r in range(9)] for c in range(9)]
-    units += [[board[r][c] for r in range(br, br + 3)
-               for c in range(bc, bc + 3)]
-              for br in (0, 3, 6) for bc in (0, 3, 6)]
-    for unit in units:
-        filled = [value for value in unit if value]
-        if len(filled) != len(set(filled)):
-            raise ValueError(&quot;Invalid clues: repeated digit in a row, column or box.&quot;)
+# Get legal candidate digits for an empty cell at row r, column c
+def get_candidates(board, r, c):
+    used = set(board[r])                      # Digits already used in this row
+    used.update(board[i][c] for i in range(9))# Digits already used in this column
+    
+    box_r, box_c = (r // 3) * 3, (c // 3) * 3 # Top-left corner of the 3x3 subgrid
+    for i in range(box_r, box_r + 3):
+        for j in range(box_c, box_c + 3):
+            used.add(board[i][j])             # Digits used in this 3x3 box
+            
+    return ALL_DIGITS - used                  # Return unused digits
 
-
-def candidates(board, r, c):
-    used = set(board[r]) | {board[i][c] for i in range(9)}
-    br, bc = (r // 3) * 3, (c // 3) * 3
-    used |= {board[i][j] for i in range(br, br + 3)
-             for j in range(bc, bc + 3)}
-    return DIGITS - used
-
-
+# Single-candidate constraint propagation: repeatedly fill forced single candidates
 def propagate(board, stats):
-    # Fill forced values until no more single-candidate cells remain.
-    while True:
-        changed = False
-        for r in range(9):
-            for c in range(9):
-                if board[r][c] != 0:
-                    continue
-                options = candidates(board, r, c)
-                if not options:
-                    return False  # Contradiction: undo this branch.
-                if len(options) == 1:
-                    board[r][c] = next(iter(options))
-                    stats[&quot;forced&quot;] += 1
-                    changed = True
-        if not changed:
-            return True
+    while True:                               # Repeat until no more forced cells exist
+        changed = False                       # Flag to track if any cell was filled
+        for r in range(9):                    # Check each row
+            for c in range(9):                # Check each column
+                if board[r][c] == 0:          # If cell is empty
+                    candidates = get_candidates(board, r, c) # Find valid digits
+                    if len(candidates) == 0:  # Dead end: no valid digit possible!
+                        return False          # Return False to trigger backtracking
+                    if len(candidates) == 1:  # Forced value: only 1 legal digit exists
+                        board[r][c] = next(iter(candidates)) # Fill cell immediately
+                        stats[&quot;forced&quot;] += 1  # Count forced assignment
+                        changed = True        # Mark that board changed
+        if not changed:                       # If no cells were forced in this pass
+            return True                       # Propagation successful
 
-
-def solve_sudoku(puzzle, improved=True):
-    validate(puzzle)
-    stats = {&quot;calls&quot;: 0, &quot;guesses&quot;: 0, &quot;forced&quot;: 0, &quot;failed_branches&quot;: 0}
-
-    def search(board):
-        stats[&quot;calls&quot;] += 1
-        if improved and not propagate(board, stats):
-            stats[&quot;failed_branches&quot;] += 1
-            return None
-        empty = [(r, c) for r in range(9) for c in range(9) if board[r][c] == 0]
-        if not empty:
-            return board
-        if improved:
-            r, c = min(empty, key=lambda cell: len(candidates(board, *cell)))
-        else:
-            r, c = empty[0]
-        for value in sorted(candidates(board, r, c)):
-            stats[&quot;guesses&quot;] += 1
-            copy = [row[:] for row in board]  # Isolate changes in each branch.
-            copy[r][c] = value
-            result = search(copy)
-            if result is not None:
-                return result
-        stats[&quot;failed_branches&quot;] += 1
-        return None
-
-    solution = search([row[:] for row in puzzle])
-    return solution, stats
-
+# Backtracking solver function
+def solve(board, use_mrv, stats):
+    stats[&quot;calls&quot;] += 1                       # Count recursive function call
+    
+    if use_mrv and not propagate(board, stats): # In improved mode, propagate constraints first
+        stats[&quot;failed_branches&quot;] += 1         # Count failure if contradiction found
+        return None                           # Backtrack
+        
+    # Find all currently empty cells
+    empty_cells = [(r, c) for r in range(9) for c in range(9) if board[r][c] == 0]
+    
+    if not empty_cells:                       # Base case: no empty cells remain
+        return board                          # Puzzle completely solved!
+        
+    if use_mrv:                               # MRV heuristic: pick cell with fewest candidates
+        r, c = min(empty_cells, key=lambda cell: len(get_candidates(board, cell[0], cell[1])))
+    else:                                     # Plain mode: pick the first empty cell
+        r, c = empty_cells[0]
+        
+    # Try each legal candidate digit in sorted order
+    for val in sorted(get_candidates(board, r, c)):
+        stats[&quot;guesses&quot;] += 1                 # Count guess / assignment
+        new_board = [row[:] for row in board] # Create a clean copy of the board for this branch
+        new_board[r][c] = val                 # Place candidate digit
+        
+        result = solve(new_board, use_mrv, stats) # Recurse with new board
+        if result is not None:                # If solution is found
+            return result                     # Propagate solution upward
+            
+    stats[&quot;failed_branches&quot;] += 1             # Count failed branch
+    return None                               # Backtrack if all candidates fail
 
 def main():
-    # Exact input printed in Practical 6. Its printed OUTPUT contains mistakes.
-    PUZZLE = [[int(x) for x in row] for row in [
-        &quot;530070000&quot;, &quot;600195000&quot;, &quot;098000060&quot;,
-        &quot;000060003&quot;, &quot;400803001&quot;, &quot;700020006&quot;,
-        &quot;060000280&quot;, &quot;000419005&quot;, &quot;000080079&quot;]]
+    # Initial 9x9 board with clues (0 represents empty cells)
+    PUZZLE = [
+        [5, 3, 0, 0, 7, 0, 0, 0, 0],
+        [6, 0, 0, 1, 9, 5, 0, 0, 0],
+        [0, 9, 8, 0, 0, 0, 0, 6, 0],
+        [0, 0, 0, 0, 6, 0, 0, 0, 3],
+        [4, 0, 0, 8, 0, 3, 0, 0, 1],
+        [7, 0, 0, 0, 2, 0, 0, 0, 6],
+        [0, 6, 0, 0, 0, 0, 2, 8, 0],
+        [0, 0, 0, 4, 1, 9, 0, 0, 5],
+        [0, 0, 0, 0, 8, 0, 0, 7, 9]
+    ]
+    
     print(&quot;Initial board:&quot;)
     for row in PUZZLE:
         print(*row)
-    for improved in (False, True):
-        result, stats = solve_sudoku(PUZZLE, improved)
-        print(&quot;\nPropagation + MRV&quot; if improved else &quot;\nPlain backtracking&quot;)
-        if result is None:
-            print(&quot;No solution.&quot;)
-        else:
-            for row in result:
+        
+    # Compare Plain Backtracking vs. Propagation + MRV
+    for use_mrv in (False, True):
+        mode_name = &quot;Propagation + MRV&quot; if use_mrv else &quot;Plain backtracking&quot;
+        stats = {&quot;calls&quot;: 0, &quot;guesses&quot;: 0, &quot;forced&quot;: 0, &quot;failed_branches&quot;: 0}
+        
+        solution = solve([row[:] for row in PUZZLE], use_mrv, stats)
+        
+        print(f&quot;\n{mode_name}&quot;)
+        if solution:
+            for row in solution:
                 print(*row)
-        print(&quot;Search statistics:&quot;, stats)
-
+        print(f&quot;Search statistics: {stats}&quot;)
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -2788,7 +2827,6 @@ Search statistics: {&#x27;calls&#x27;: 1, &#x27;guesses&#x27;: 0, &#x27;forced&#
       <div id="p7-algorithm" class="card-section">
         <h2 class="section-heading">Step-by-Step Algorithm & Dry Run</h2>
         <ol>
-  <li>Validate square distance matrix and positive beam width <code>k</code> and <code>max_iterations</code>.</li>
   <li>Generate <code>k</code> distinct random initial permutations with city 0 fixed.</li>
   <li>Evaluate tour costs: sum consecutive edge weights plus edge returning from last city to city 0.</li>
   <li>Iterate up to <code>max_iterations</code>:<br>&nbsp;&nbsp;a. Initialize candidate pool with current beam.<br>&nbsp;&nbsp;b. For each tour in beam, generate all 2-city swap neighbours and add to pool.<br>&nbsp;&nbsp;c. Sort pool by <code>(tour_cost, tour)</code> and select top <code>k</code> distinct tours.<br>&nbsp;&nbsp;d. If the new beam is identical to the previous beam, break (stabilized).<br>&nbsp;&nbsp;e. Update beam = next_beam.</li>
@@ -2808,10 +2846,10 @@ Search statistics: {&#x27;calls&#x27;: 1, &#x27;guesses&#x27;: 0, &#x27;forced&#
       <!-- SOURCE CODE CARD -->
       <div id="p7-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -2824,73 +2862,85 @@ Search statistics: {&#x27;calls&#x27;: 1, &#x27;guesses&#x27;: 0, &#x27;forced&#
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 7: Local Beam Search for the Traveling Salesman Problem.
-Run: python pract7.py
-Edit DISTANCES, K, MAX_ITERATIONS and SEED in main(). Complete cost matrix.
-Keep city 0 first; swap two other cities to generate neighbours.
-Elitist variant: select k best DISTINCT tours from current tours + neighbours.
-A best-found tour is NOT a general guarantee of the global optimum.
-&quot;&quot;&quot;
-import random
-from math import factorial, isfinite
+          <pre><code># Practical 7: Traveling Salesman Problem (TSP) using Local Beam Search
+import random                                 # Import random for generating initial tours
 
+# Compute total travel cost of a tour, including the edge returning to start
+def calculate_tour_cost(tour, distances):
+    total = 0                                 # Initialize total distance
+    n = len(tour)                             # Number of cities
+    for i in range(n):                        # Sum edge distances
+        u = tour[i]                           # Current city
+        v = tour[(i + 1) % n]                 # Next city (wraps around from last to first)
+        total += distances[u][v]              # Add edge cost
+    return total                              # Return total tour length
 
-def tour_cost(tour, distances):
-    return sum(distances[tour[i]][tour[(i + 1) % len(tour)]]
-               for i in range(len(tour)))  # Includes return to start.
+# Generate all 2-city swap neighbours (keeping city 0 fixed as starting anchor)
+def get_neighbours(tour):
+    neighbours = []                           # List of neighbour tours
+    n = len(tour)                             # Number of cities
+    for i in range(1, n - 1):                 # Select first city to swap (skip start 0)
+        for j in range(i + 1, n):             # Select second city to swap
+            new_tour = list(tour)             # Create a mutable copy
+            new_tour[i], new_tour[j] = new_tour[j], new_tour[i] # Swap two cities
+            neighbours.append(tuple(new_tour)) # Append new tour as tuple
+    return neighbours                         # Return list of generated neighbours
 
-
-def neighbours(tour):
-    for i in range(1, len(tour) - 1):
-        for j in range(i + 1, len(tour)):
-            copy = list(tour)
-            copy[i], copy[j] = copy[j], copy[i]
-            yield tuple(copy)
-
-
+# Local Beam Search algorithm with beam width k
 def local_beam_search(distances, k=3, max_iterations=100, seed=7):
-    n = len(distances)
-    if n &lt; 2 or any(len(row) != n for row in distances):
-        raise ValueError(&quot;Provide a square matrix for at least two cities.&quot;)
-    if any(not isfinite(v) or v &lt; 0 for row in distances for v in row):
-        raise ValueError(&quot;Distances must be finite and nonnegative.&quot;)
-    if k &lt; 1 or max_iterations &lt; 1:
-        raise ValueError(&quot;Beam width and iteration limit must be positive.&quot;)
-    # Fixing city 0 leaves (n-1)! distinct permutations, including reverse tours.
-    k = min(k, factorial(n - 1))
-    rng = random.Random(seed)
-    initial = set()
-    while len(initial) &lt; k:
-        initial.add((0,) + tuple(rng.sample(range(1, n), n - 1)))
-    rank = lambda tour: (tour_cost(tour, distances), tour)
-    beam = sorted(initial, key=rank)
-    history = [tour_cost(beam[0], distances)]
+    n = len(distances)                        # Total number of cities
+    rng = random.Random(seed)                 # Seeded generator for reproducible results
+    
+    # Generate k distinct initial random tours starting at city 0
+    beam = set()                              # Use set to avoid duplicate tours
+    while len(beam) &lt; k:
+        other_cities = rng.sample(range(1, n), n - 1) # Randomly permute cities 1 to n-1
+        beam.add((0,) + tuple(other_cities))  # Prepend start city 0
+    beam = list(beam)                         # Convert to list
+    
+    # Sort initial beam by cost
+    beam.sort(key=lambda t: (calculate_tour_cost(t, distances), t))
+    cost_history = [calculate_tour_cost(beam[0], distances)] # Record initial best cost
+    
+    # Main search loop
     for _ in range(max_iterations):
-        pool = set(beam)
-        for tour in beam:
-            pool.update(neighbours(tour))
-        next_beam = sorted(pool, key=rank)[:k]
-        history.append(tour_cost(next_beam[0], distances))
-        if next_beam == beam:
-            break  # Whole beam is unchanged, not merely its best cost.
-        beam = next_beam
-    return beam[0], tour_cost(beam[0], distances), history
-
+        pool = set(beam)                      # Elitist pool: include current tours
+        for tour in beam:                     # Generate neighbours for each beam member
+            pool.update(get_neighbours(tour)) # Add swap neighbours into the pool
+            
+        # Select the top k distinct tours with the lowest cost
+        next_beam = sorted(pool, key=lambda t: (calculate_tour_cost(t, distances), t))[:k]
+        
+        current_best = calculate_tour_cost(next_beam[0], distances) # Best cost in this iteration
+        cost_history.append(current_best)     # Record best cost
+        
+        if next_beam == beam:                 # Stopping condition: beam has stopped changing
+            break
+        beam = next_beam                      # Update beam for the next iteration
+        
+    best_tour = beam[0]                       # The lowest-cost tour found
+    best_cost = calculate_tour_cost(best_tour, distances)
+    return best_tour, best_cost, cost_history
 
 def main():
-    DISTANCES = [[0, 10, 15, 20, 25],
-                 [10, 0, 35, 25, 17],
-                 [15, 35, 0, 30, 28],
-                 [20, 25, 30, 0, 16],
-                 [25, 17, 28, 16, 0]]
-    K, MAX_ITERATIONS, SEED = 3, 100, 7
-    tour, cost, history = local_beam_search(DISTANCES, K, MAX_ITERATIONS, SEED)
-    print(&quot;Best-found tour:&quot;, &quot; -&gt; &quot;.join(str(city) for city in tour + (tour[0],)))
+    # Symmetric 5-city distance matrix (0=A, 1=B, 2=C, 3=D, 4=E)
+    DISTANCES = [
+        [0, 10, 15, 20, 25],                  # Distances from City A
+        [10, 0, 35, 25, 17],                  # Distances from City B
+        [15, 35, 0, 30, 28],                  # Distances from City C
+        [20, 25, 30, 0, 16],                  # Distances from City D
+        [25, 17, 28, 16, 0]                   # Distances from City E
+    ]
+    
+    K = 3                                     # Beam width (number of states tracked)
+    best_tour, best_cost, history = local_beam_search(DISTANCES, k=K, max_iterations=100, seed=7)
+    
+    tour_with_return = best_tour + (best_tour[0],) # Append return to start
+    print(&quot;Best-found tour:&quot;, &quot; -&gt; &quot;.join(str(city) for city in tour_with_return))
     print(&quot;City labels: 0=A, 1=B, 2=C, 3=D, 4=E&quot;)
-    print(&quot;Best-found cost:&quot;, cost)
-    print(&quot;Best cost at initialization and after each iteration:&quot;, history)
+    print(f&quot;Best-found cost: {best_cost}&quot;)
+    print(f&quot;Best cost at initialization and after each iteration: {history}&quot;)
     print(&quot;Local Beam Search does not guarantee the global optimum.&quot;)
-
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -3207,10 +3257,10 @@ Local Beam Search does not guarantee the global optimum.</div>
       <!-- SOURCE CODE CARD -->
       <div id="p8-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -3223,77 +3273,80 @@ Local Beam Search does not guarantee the global optimum.</div>
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 8: BFS planning using the 8-puzzle.
-Run: python pract8.py
-Edit START/GOAL in main(). 0 means blank; actions move the blank.
-Standalone file: does not import pract3.py. BFS gives fewest unit-cost moves.
-&quot;&quot;&quot;
-from collections import deque
+          <pre><code># Practical 8: Classical Planning for 8-Puzzle using Breadth-First Search (BFS)
+from collections import deque                 # Import deque for efficient FIFO queue operations
 
+# Check if puzzle is solvable using inversion parity
+def is_solvable(state):
+    tiles = [x for x in state if x != 0]      # Filter out the blank tile (0)
+    inversions = 0                            # Count inversions
+    for i in range(len(tiles)):
+        for j in range(i + 1, len(tiles)):
+            if tiles[i] &gt; tiles[j]:
+                inversions += 1
+    return inversions % 2 == 0                # True if even inversions
 
-def validate(state):
-    if len(state) != 9 or set(state) != set(range(9)):
-        raise ValueError(&quot;Use 0 through 8 exactly once.&quot;)
+# Generate all legal blank tile movements (UP, DOWN, LEFT, RIGHT)
+def get_neighbours(state):
+    neighbours = []                           # List of valid next states
+    blank = state.index(0)                    # Position index of the blank tile (0)
+    r, c = divmod(blank, 3)                   # Convert index to row and column
+    
+    # Allowed actions: (action_name, row_offset, col_offset)
+    actions = [(&quot;UP&quot;, -1, 0), (&quot;DOWN&quot;, 1, 0), (&quot;LEFT&quot;, 0, -1), (&quot;RIGHT&quot;, 0, 1)]
+    
+    for action_name, dr, dc in actions:       # Test all 4 directions
+        nr, nc = r + dr, c + dc               # Target position
+        if 0 &lt;= nr &lt; 3 and 0 &lt;= nc &lt; 3:       # Ensure within grid boundaries
+            new_blank = nr * 3 + nc           # Target 1D index
+            board = list(state)               # Copy state to list
+            board[blank], board[new_blank] = board[new_blank], board[blank] # Swap blank with tile
+            neighbours.append((tuple(board), action_name)) # Save new board tuple and action
+    return neighbours                         # Return all reachable boards
 
-
-def parity(state):
-    tiles = [x for x in state if x != 0]
-    return sum(tiles[i] &gt; tiles[j] for i in range(len(tiles))
-               for j in range(i + 1, len(tiles))) % 2
-
-
-def neighbours(state):
-    blank = state.index(0)
-    r, c = divmod(blank, 3)
-    for action, dr, dc in [(&quot;UP&quot;, -1, 0), (&quot;DOWN&quot;, 1, 0),
-                           (&quot;LEFT&quot;, 0, -1), (&quot;RIGHT&quot;, 0, 1)]:
-        nr, nc = r + dr, c + dc
-        if 0 &lt;= nr &lt; 3 and 0 &lt;= nc &lt; 3:
-            board = list(state)
-            other = 3 * nr + nc
-            board[blank], board[other] = board[other], board[blank]
-            yield tuple(board), action
-
-
-def bfs(start, goal):
-    validate(start)
-    validate(goal)
-    if parity(start) != parity(goal):
+# Uninformed BFS planning to find the minimum-action plan
+def bfs_plan(start, goal):
+    if not is_solvable(start):                # Pre-check solvability
+        print(&quot;No solution: initial and goal inversion parities differ.&quot;)
         return None, 0
-    queue = deque([start])
-    parent = {start: (None, &quot;START&quot;)}
-    expanded = 0
-    while queue:
-        current = queue.popleft()
-        if current == goal:
-            path = []
-            while current is not None:
-                previous, action = parent[current]
-                path.append((current, action))
-                current = previous
-            return path[::-1], expanded
-        expanded += 1
-        for nxt, action in neighbours(current):
-            if nxt not in parent:  # Mark visited when enqueued.
-                parent[nxt] = (current, action)
-                queue.append(nxt)
-    return None, expanded
-
+        
+    queue = deque([start])                    # FIFO queue for BFS
+    parent = {start: (None, &quot;START&quot;)}         # Maps each state to (predecessor_state, action)
+    expanded_count = 0                        # Track search effort
+    
+    while queue:                              # Loop while queue has states
+        curr = queue.popleft()                # Remove oldest state (FIFO)
+        
+        if curr == goal:                      # Goal check
+            path = []                         # Reconstruct plan backward
+            while curr is not None:
+                prev_state, action = parent[curr]
+                path.append((curr, action))   # Record board and action taken
+                curr = prev_state             # Move back to predecessor
+            return path[::-1], expanded_count # Return reversed path (START -&gt; GOAL)
+            
+        expanded_count += 1                   # Increment expanded count
+        
+        for next_state, action in get_neighbours(curr): # Generate successors
+            if next_state not in parent:      # If not visited yet
+                parent[next_state] = (curr, action) # Mark visited immediately
+                queue.append(next_state)      # Enqueue for exploration
+                
+    return None, expanded_count               # Return None if no plan found
 
 def main():
-    START = (1, 2, 3, 4, 0, 6, 7, 5, 8)
-    GOAL = (1, 2, 3, 4, 5, 6, 7, 8, 0)
-    path, expanded = bfs(START, GOAL)
-    if path is None:
-        print(&quot;No solution: initial and goal inversion parities differ.&quot;)
-        return
-    for step, (board, action) in enumerate(path):
-        print(f&quot;Step {step}: {action}&quot;)
-        for i in range(0, 9, 3):
-            print(*board[i:i + 3])
-    print(&quot;Moves:&quot;, len(path) - 1)
-    print(&quot;Nodes expanded (excluding goal):&quot;, expanded)
-
+    START = (1, 2, 3, 4, 0, 6, 7, 5, 8)       # Initial board (0 is blank)
+    GOAL = (1, 2, 3, 4, 5, 6, 7, 8, 0)        # Goal board
+    
+    path, expanded = bfs_plan(START, GOAL)    # Execute BFS planning
+    
+    if path:
+        for step, (board, action) in enumerate(path):
+            print(f&quot;Step {step}: {action}&quot;)
+            for i in range(0, 9, 3):          # Print as 3x3 grid
+                print(*board[i:i + 3])
+        print(f&quot;Moves: {len(path) - 1}&quot;)
+        print(f&quot;Nodes expanded (excluding goal): {expanded}&quot;)
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -3614,10 +3667,10 @@ Nodes expanded (excluding goal): 8</div>
       <!-- SOURCE CODE CARD -->
       <div id="p9-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -3630,62 +3683,69 @@ Nodes expanded (excluding goal): 8</div>
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 9: DFS for the Water Jug Problem.
-Run: python pract9.py
-Edit CAPACITY_A, CAPACITY_B, TARGET in main(). Positive integer capacities.
-State=(water in A, water in B); goal is TARGET in EITHER jug.
-DFS returns a valid path, not necessarily the shortest path.
-&quot;&quot;&quot;
-from math import gcd
+          <pre><code># Practical 9: Water Jug Problem using Depth-First Search (DFS)
+from math import gcd                          # Import gcd to test mathematical solvability
 
+# Generate all 6 possible water jug transitions from current state (a, b)
+def get_successors(state, cap_a, cap_b):
+    a, b = state                              # a: water in Jug A, b: water in Jug B
+    
+    # Calculate how much water can be transferred between jugs
+    pour_a_to_b = min(a, cap_b - b)           # Limited by water in A or remaining space in B
+    pour_b_to_a = min(b, cap_a - a)           # Limited by water in B or remaining space in A
+    
+    return [
+        ((cap_a, b), &quot;Fill A&quot;),               # Operation 1: Fill Jug A completely
+        ((a, cap_b), &quot;Fill B&quot;),               # Operation 2: Fill Jug B completely
+        ((0, b), &quot;Empty A&quot;),                  # Operation 3: Empty Jug A completely
+        ((a, 0), &quot;Empty B&quot;),                  # Operation 4: Empty Jug B completely
+        ((a - pour_a_to_b, b + pour_a_to_b), &quot;Pour A -&gt; B&quot;), # Operation 5: Pour from A into B
+        ((a + pour_b_to_a, b - pour_b_to_a), &quot;Pour B -&gt; A&quot;)  # Operation 6: Pour from B into A
+    ]
 
-def successors(state, capacity_a, capacity_b):
-    a, b = state
-    a_to_b = min(a, capacity_b - b)
-    b_to_a = min(b, capacity_a - a)
-    return [((capacity_a, b), &quot;Fill A&quot;),
-            ((a, capacity_b), &quot;Fill B&quot;),
-            ((0, b), &quot;Empty A&quot;),
-            ((a, 0), &quot;Empty B&quot;),
-            ((a - a_to_b, b + a_to_b), &quot;Pour A -&gt; B&quot;),
-            ((a + b_to_a, b - b_to_a), &quot;Pour B -&gt; A&quot;)]
-
-
-def water_jug_dfs(capacity_a, capacity_b, target):
-    if capacity_a &lt;= 0 or capacity_b &lt;= 0 or target &lt; 0:
-        raise ValueError(&quot;Capacities must be positive and target nonnegative.&quot;)
-    if target &gt; max(capacity_a, capacity_b) or target % gcd(capacity_a, capacity_b):
+# DFS search using a LIFO stack to find a solution path
+def solve_water_jug_dfs(cap_a, cap_b, target):
+    # Mathematical solvability check (Bézout&#x27;s identity)
+    if target &gt; max(cap_a, cap_b) or target % gcd(cap_a, cap_b) != 0:
+        print(&quot;No solution for these capacities and target.&quot;)
         return None
-    start = (0, 0)
-    stack = [start]
-    parent = {start: (None, &quot;START&quot;)}
-    while stack:
-        current = stack.pop()  # Last In, First Out.
-        if target in current:
-            path = []
-            while current is not None:
-                previous, action = parent[current]
-                path.append((current, action))
-                current = previous
-            return path[::-1]
-        for nxt, action in successors(current, capacity_a, capacity_b):
-            if nxt not in parent:
-                parent[nxt] = (current, action)
-                stack.append(nxt)
-    return None
-
+        
+    start_state = (0, 0)                      # Initial state: both jugs are empty
+    stack = [start_state]                     # LIFO stack initialized with start state
+    parent = {start_state: (None, &quot;START&quot;)}   # Tracks visited states and action taken
+    
+    while stack:                              # Loop while stack is not empty
+        curr = stack.pop()                    # Pop the most recently added state (DFS)
+        
+        # Check if target amount is achieved in either jug
+        if target in curr:
+            path = []                         # Reconstruct solution path
+            while curr is not None:           # Follow parent pointers backward
+                prev_state, action = parent[curr]
+                path.append((curr, action))   # Record state and action
+                curr = prev_state             # Move back to predecessor
+            return path[::-1]                 # Return reversed path (START -&gt; GOAL)
+            
+        # Explore all 6 possible operations
+        for next_state, action in get_successors(curr, cap_a, cap_b):
+            if next_state not in parent:      # If this water configuration is new
+                parent[next_state] = (curr, action) # Mark visited and record parent
+                stack.append(next_state)      # Push onto stack for deep exploration
+                
+    return None                               # Return None if no solution found
 
 def main():
-    CAPACITY_A, CAPACITY_B, TARGET = 4, 3, 2
-    path = water_jug_dfs(CAPACITY_A, CAPACITY_B, TARGET)
-    if path is None:
-        print(&quot;No solution for these capacities and target.&quot;)
-        return
-    for step, ((a, b), action) in enumerate(path):
-        print(f&quot;{step}. {action}: Jug A={a} litres, Jug B={b} litres&quot;)
-    print(&quot;Operations:&quot;, len(path) - 1)
-    print(&quot;Goal reached. DFS does not guarantee the shortest path.&quot;)
-
+    CAP_A = 4                                 # Capacity of Jug A (4 litres)
+    CAP_B = 3                                 # Capacity of Jug B (3 litres)
+    TARGET = 2                                # Target amount to measure (2 litres)
+    
+    path = solve_water_jug_dfs(CAP_A, CAP_B, TARGET) # Run DFS
+    
+    if path:
+        for step, ((a, b), action) in enumerate(path):
+            print(f&quot;{step}. {action}: Jug A={a} litres, Jug B={b} litres&quot;)
+        print(f&quot;Operations: {len(path) - 1}&quot;)
+        print(&quot;Goal reached. DFS does not guarantee the shortest path.&quot;)
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -3977,10 +4037,10 @@ Goal reached. DFS does not guarantee the shortest path.</div>
       <!-- SOURCE CODE CARD -->
       <div id="p10-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -3993,75 +4053,88 @@ Goal reached. DFS does not guarantee the shortest path.</div>
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 10: N-Queens - plain backtracking and forward checking.
-Run: python pract10.py
-Edit N in main() (default 8). Finds ALL solutions and prints the first.
-Both modes count recursive calls identically, including complete solutions.
-One variable per row; its value is the queen&#x27;s column (zero-based).
-&quot;&quot;&quot;
+          <pre><code># Practical 10: 8-Queens Problem - Plain Backtracking vs. Forward Checking
 
-
+# Check if placing a queen at (row, col) is safe from already placed queens
 def safe(queens, row, col):
-    for r in range(row):
+    for r in range(row):                      # Check all previously placed queens
+        # Conflict if in the same column OR along the same diagonal
         if queens[r] == col or abs(queens[r] - col) == row - r:
-            return False
-    return True
+            return False                      # Position is under attack
+    return True                               # Safe to place queen
 
-
+# Solver function supporting both Plain Backtracking and Forward Checking
 def solve_queens(n=8, forward_checking=False):
-    if n &lt; 1:
-        raise ValueError(&quot;N must be positive.&quot;)
-    queens = [-1] * n
-    solutions = []
-    stats = {&quot;calls&quot;: 0, &quot;candidates_tried&quot;: 0, &quot;domain_wipeouts&quot;: 0}
-
+    queens = [-1] * n                         # queens[row] stores column index for that row
+    solutions = []                            # List to store all valid board arrangements
+    stats = {&quot;calls&quot;: 0, &quot;candidates_tried&quot;: 0, &quot;domain_wipeouts&quot;: 0} # Performance metrics
+    
+    # Recursive search function
     def search(row, domains):
-        stats[&quot;calls&quot;] += 1
-        if row == n:
-            solutions.append(queens.copy())  # Save an independent solution.
+        stats[&quot;calls&quot;] += 1                   # Count recursive call
+        
+        if row == n:                          # Base case: all n queens successfully placed
+            solutions.append(queens.copy())   # Save independent copy of the solution board
             return
+            
+        # Determine available columns for this row
         options = sorted(domains[row]) if forward_checking else range(n)
-        for col in options:
-            stats[&quot;candidates_tried&quot;] += 1
-            if not safe(queens, row, col):
+        
+        for col in options:                   # Try each column candidate
+            stats[&quot;candidates_tried&quot;] += 1    # Count candidate attempt
+            
+            if not safe(queens, row, col):    # Skip if attacked by earlier queens
                 continue
-            queens[row] = col
-            if forward_checking:
-                next_domains = [domain.copy() for domain in domains]
-                possible = True
+                
+            queens[row] = col                 # Place queen at (row, col)
+            
+            if forward_checking:              # Forward Checking mode: lookahead &amp; prune
+                # Copy future domains so we don&#x27;t modify previous branch data
+                next_domains = [d.copy() for d in domains]
+                possible = True               # Flag for domain wipeout
+                
+                # Prune attacked columns from all future rows (later &gt; row)
                 for later in range(row + 1, n):
-                    delta = later - row
+                    delta = later - row       # Diagonal distance
+                    # Remove same column and both diagonal attack paths
                     next_domains[later] -= {col, col - delta, col + delta}
-                    if not next_domains[later]:
-                        possible = False
-                        break
-                if possible:
-                    search(row + 1, next_domains)
+                    
+                    if not next_domains[later]: # If any future row has 0 legal columns
+                        possible = False      # Domain wipeout detected!
+                        break                 # Stop pruning future rows
+                        
+                if possible:                  # If all future rows still have at least 1 legal spot
+                    search(row + 1, next_domains) # Recurse safely
                 else:
-                    stats[&quot;domain_wipeouts&quot;] += 1
+                    stats[&quot;domain_wipeouts&quot;] += 1 # Count early failure detection
             else:
-                search(row + 1, domains)
-            queens[row] = -1  # Backtrack even after recording a solution.
-
+                search(row + 1, domains)      # Plain mode: recurse without pruning domains
+                
+            queens[row] = -1                  # Backtrack: remove queen and try next column
+            
+    # Initial domains: every row initially has all columns {0, 1, ..., n-1} available
     search(0, [set(range(n)) for _ in range(n)])
     return solutions, stats
 
-
 def main():
-    N = 8
+    N = 8                                     # 8x8 Chessboard with 8 Queens
+    
     for use_fc in (False, True):
+        mode_header = &quot;\nForward checking&quot; if use_fc else &quot;\nPlain backtracking&quot;
         solutions, stats = solve_queens(N, use_fc)
-        print(&quot;\nForward checking&quot; if use_fc else &quot;\nPlain backtracking&quot;)
-        print(&quot;Total solutions:&quot;, len(solutions))
+        
+        print(mode_header)
+        print(f&quot;Total solutions: {len(solutions)}&quot;)
+        
         if solutions:
-            first = solutions[0]
-            print(&quot;First solution, columns by row:&quot;, first)
-            for col in first:
+            first = solutions[0]              # Show first solution found
+            print(f&quot;First solution, columns by row: {first}&quot;)
+            for col in first:                 # Print board visualization
                 print(&quot; &quot;.join(&quot;Q&quot; if c == col else &quot;.&quot; for c in range(N)))
         else:
             print(&quot;No solution.&quot;)
-        print(&quot;Statistics for ALL solutions:&quot;, stats)
-
+            
+        print(f&quot;Statistics for ALL solutions: {stats}&quot;)
 
 if __name__ == &quot;__main__&quot;:
     main()
@@ -4403,10 +4476,10 @@ Statistics for ALL solutions: {&#x27;calls&#x27;: 1165, &#x27;candidates_tried&#
       <!-- SOURCE CODE CARD -->
       <div id="p11-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Standalone Python 3 implementation with standard library imports only (no extra packages required).
+          Simplified Python 3 code with clear inline explanations beside each line for effortless exam and viva study.
         </p>
 
         <div class="code-container">
@@ -4419,71 +4492,88 @@ Statistics for ALL solutions: {&#x27;calls&#x27;: 1165, &#x27;candidates_tried&#
               <span>Copy Code</span>
             </button>
           </div>
-          <pre><code>&quot;&quot;&quot;Practical 11: Rule-based chatbot with regex pattern matching.
-Run: python pract11.py
-No internet, API key, training data or external library needed.
-Add a (pattern, response) pair to RULES to extend the chatbot.
-First matching rule wins. Specific rules precede general greetings.
-Captured names/moods are used in the reply, but are NOT remembered later.
-&quot;&quot;&quot;
-import re
+          <pre><code># Practical 11: Rule-Based Chatbot using Regular Expressions (re module)
+import re                                     # Import regular expressions module
 
+# Ordered list of (pattern, template_response) rules
 RULES = [
-    (r&quot;\bmy name is (?P&lt;name&gt;[a-z]+(?: [a-z]+)*)$&quot;,
-     &quot;Nice to meet you, {name}!&quot;),
+    # Rule 1: Capture user name (e.g., &quot;my name is Rahul&quot;)
+    (r&quot;\bmy name is (?P&lt;name&gt;[a-z]+(?: [a-z]+)*)$&quot;, &quot;Nice to meet you, {name}!&quot;),
+    
+    # Rule 2: Bot identity query
     (r&quot;\bwhat is your name\b&quot;, &quot;I am AI-Bot, a rule-based chatbot.&quot;),
+    
+    # Rule 3: Pleasantry / greeting enquiry
     (r&quot;\bhow are you\b&quot;, &quot;I am fine, thank you!&quot;),
-    (r&quot;\bi (?:am(?: feeling)?|feel) (?P&lt;mood&gt;happy|excited|good)\b&quot;,
-     &quot;Glad you feel {mood}!&quot;),
-    (r&quot;\bi (?:am(?: feeling)?|feel) (?P&lt;mood&gt;[a-z]+)\b&quot;,
-     &quot;You said you feel {mood}. Thank you for sharing.&quot;),
-    (r&quot;\b(artificial intelligence|ai)\b&quot;,
-     &quot;AI builds systems that perform tasks such as reasoning and problem solving.&quot;),
+    
+    # Rule 4: Capture positive emotion (e.g., &quot;I feel happy&quot;)
+    (r&quot;\bi (?:am(?: feeling)?|feel) (?P&lt;mood&gt;happy|excited|good)\b&quot;, &quot;Glad you feel {mood}!&quot;),
+    
+    # Rule 5: Capture general emotion
+    (r&quot;\bi (?:am(?: feeling)?|feel) (?P&lt;mood&gt;[a-z]+)\b&quot;, &quot;You said you feel {mood}. Thank you for sharing.&quot;),
+    
+    # Rule 6: Subject questions about Artificial Intelligence
+    (r&quot;\b(artificial intelligence|ai)\b&quot;, &quot;AI builds systems that perform tasks such as reasoning and problem solving.&quot;),
+    
+    # Rule 7: Subject questions about Chatbots
     (r&quot;\bchatbot\b&quot;, &quot;A chatbot is a program that converses with a user.&quot;),
+    
+    # Rule 8: Technology question
     (r&quot;\b(language|python)\b&quot;, &quot;I am written in Python using the re module.&quot;),
-    (r&quot;\b(pattern matching|regular expressions?)\b&quot;,
-     &quot;Pattern matching checks input against predefined text patterns.&quot;),
+    
+    # Rule 9: Concept question
+    (r&quot;\b(pattern matching|regular expressions?)\b&quot;, &quot;Pattern matching checks input against predefined text patterns.&quot;),
+    
+    # Rule 10: Gratitude
     (r&quot;\b(thanks|thank you)\b&quot;, &quot;You are welcome!&quot;),
+    
+    # Rule 11: General greeting (placed after specific rules)
     (r&quot;\b(hello|hi|hey)\b&quot;, &quot;Hello! How can I help you?&quot;)
 ]
+
 DEFAULT = &quot;I do not have a rule for that. Try asking about AI or chatbots.&quot;
 
-
+# Clean and normalize input text
 def preprocess(text):
-    text = text.lower().strip()
-    text = re.sub(r&quot;[^\w\s]&quot;, &quot; &quot;, text)  # Replace punctuation with spaces.
-    return &quot; &quot;.join(text.split())  # Collapse repeated spaces.
+    text = text.lower().strip()                # Convert text to lowercase and strip edges
+    text = re.sub(r&quot;[^\w\s]&quot;, &quot; &quot;, text)      # Replace punctuation marks with spaces
+    return &quot; &quot;.join(text.split())             # Collapse multiple spaces into a single space
 
-
+# Match input against predefined rules and return response
 def respond(user_input):
-    text = preprocess(user_input)
+    text = preprocess(user_input)             # Clean the incoming user message
+    
+    # Check for exit command
     if re.fullmatch(r&quot;bye|goodbye|exit|quit&quot;, text):
-        return &quot;Goodbye!&quot;, True
-    if not text:
+        return &quot;Goodbye!&quot;, True               # Return goodbye message and stop flag True
+        
+    if not text:                              # If user entered an empty message
         return &quot;Please type a message.&quot;, False
+        
+    # Check each rule in priority order
     for pattern, reply in RULES:
-        match = re.search(pattern, text)
-        if match:
-            values = match.groupdict()
-            if &quot;name&quot; in values:
+        match = re.search(pattern, text)      # Search for pattern in user text
+        if match:                             # If a pattern matches
+            values = match.groupdict()        # Extract captured variables (name, mood)
+            if &quot;name&quot; in values:              # Capitalize user&#x27;s name if captured
                 values[&quot;name&quot;] = values[&quot;name&quot;].title()
-            return reply.format(**values), False
-    return DEFAULT, False
-
+            return reply.format(**values), False # Inject captured values into response
+            
+    return DEFAULT, False                     # Return default fallback if no rule matched
 
 def main():
     print(&quot;AI-Bot: Hello! Type bye, goodbye, exit or quit to stop.&quot;)
-    while True:
-        try:
-            message = input(&quot;You: &quot;)
-        except (EOFError, KeyboardInterrupt):
-            print(&quot;\nAI-Bot: Goodbye!&quot;)
-            break
-        reply, stop = respond(message)
-        print(&quot;AI-Bot:&quot;, reply)
-        if stop:
-            break
-
+    
+    while True:                               # Chat loop
+        message = input(&quot;You: &quot;)              # Read user message from terminal
+        if not message.strip():               # Skip empty inputs
+            continue
+            
+        reply, should_stop = respond(message) # Generate reply from chatbot
+        print(f&quot;AI-Bot: {reply}&quot;)             # Print bot&#x27;s answer
+        
+        if should_stop:                       # If user typed an exit word
+            break                             # Exit the loop
 
 if __name__ == &quot;__main__&quot;:
     main()
