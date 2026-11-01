@@ -511,11 +511,60 @@
       <!-- SOURCE CODE CARD -->
       <div id="p1-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (23 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (23 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract1_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 1: Vacuum Cleaner Agent (Simple Reflex Agent)
+# Max 25 lines - Clean &amp; Exam-Ready
+
+rooms = {&quot;A&quot;: &quot;Dirty&quot;, &quot;B&quot;: &quot;Dirty&quot;}
+location = &quot;A&quot;
+
+print(f&quot;Initial State: {rooms}, Agent starts at: {location}&quot;)
+
+step = 1
+while &quot;Dirty&quot; in rooms.values():
+    status = rooms[location]
+    if status == &quot;Dirty&quot;:
+        print(f&quot;Step {step}: Room {location} is Dirty -&gt; Action: SUCK&quot;)
+        rooms[location] = &quot;Clean&quot;
+    elif location == &quot;A&quot;:
+        print(f&quot;Step {step}: Room A is Clean -&gt; Action: MOVE RIGHT&quot;)
+        location = &quot;B&quot;
+    else:
+        print(f&quot;Step {step}: Room B is Clean -&gt; Action: MOVE LEFT&quot;)
+        location = &quot;A&quot;
+    step += 1
+
+print(f&quot;Final State: {rooms} (All rooms clean in {step - 1} actions!)&quot;)
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
@@ -837,11 +886,81 @@ Simulation stopped: both rooms are clean.</div>
       <!-- SOURCE CODE CARD -->
       <div id="p2-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (44 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (44 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract2_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 2: Grid Navigation with Obstacles (BFS Search)
+# Max 40 lines - Clean &amp; Exam-Ready
+from collections import deque
+
+grid = [
+    [&quot;S&quot;, &quot;.&quot;, &quot;.&quot;, &quot;X&quot;, &quot;.&quot;],
+    [&quot;.&quot;, &quot;X&quot;, &quot;.&quot;, &quot;X&quot;, &quot;.&quot;],
+    [&quot;.&quot;, &quot;X&quot;, &quot;.&quot;, &quot;.&quot;, &quot;.&quot;],
+    [&quot;.&quot;, &quot;.&quot;, &quot;.&quot;, &quot;X&quot;, &quot;.&quot;],
+    [&quot;X&quot;, &quot;X&quot;, &quot;.&quot;, &quot;.&quot;, &quot;G&quot;]
+]
+rows, cols = len(grid), len(grid[0])
+
+for i in range(rows):
+    for j in range(cols):
+        if grid[i][j] == &quot;S&quot;: start = (i, j)
+        if grid[i][j] == &quot;G&quot;: goal = (i, j)
+
+directions = [(0, 1, &quot;Right&quot;), (1, 0, &quot;Down&quot;), (0, -1, &quot;Left&quot;), (-1, 0, &quot;Up&quot;)]
+queue = deque([start])
+visited = {start}
+parent = {}
+
+while queue:
+    curr = queue.popleft()
+    if curr == goal: break
+    r, c = curr
+    for dr, dc, move in directions:
+        nr, nc = r + dr, c + dc
+        if 0 &lt;= nr &lt; rows and 0 &lt;= nc &lt; cols and grid[nr][nc] != &quot;X&quot; and (nr, nc) not in visited:
+            visited.add((nr, nc))
+            parent[(nr, nc)] = (curr, move)
+            queue.append((nr, nc))
+
+if goal not in visited:
+    print(&quot;No path found!&quot;)
+else:
+    path, curr = [], goal
+    while curr != start:
+        curr, move = parent[curr]
+        path.append(move)
+    path.reverse()
+    print(&quot;Shortest Path:&quot;, &quot; -&gt; &quot;.join(path))
+    print(&quot;Total Steps:&quot;, len(path))
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
@@ -1250,11 +1369,74 @@ X X . . G</div>
       <!-- SOURCE CODE CARD -->
       <div id="p3-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (37 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (37 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract3_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 3: 8-Puzzle Problem using A* (Manhattan Heuristic)
+# Max 35 lines - Clean &amp; Exam-Ready
+import heapq
+
+start = (1, 2, 3, 5, 6, 0, 7, 8, 4)
+goal = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+goal_pos = {t: (i // 3, i % 3) for i, t in enumerate(goal)}
+
+def manhattan(s):
+    return sum(abs(i // 3 - goal_pos[t][0]) + abs(i % 3 - goal_pos[t][1])
+               for i, t in enumerate(s) if t != 0)
+
+# Priority queue stores: (f, g, state, path)
+pq = [(manhattan(start), 0, start, [])]
+visited = {start: 0}
+
+while pq:
+    f, g, s, path = heapq.heappop(pq)
+    if s == goal:
+        print(f&quot;Goal reached in {g} moves!&quot;)
+        print(&quot;Move sequence:&quot;, &quot; -&gt; &quot;.join(path))
+        break
+
+    b = s.index(0)
+    r, c = b // 3, b % 3
+    moves = [(-1, 0, &quot;UP&quot;), (1, 0, &quot;DOWN&quot;), (0, -1, &quot;LEFT&quot;), (0, 1, &quot;RIGHT&quot;)]
+
+    for dr, dc, act in moves:
+        nr, nc = r + dr, c + dc
+        if 0 &lt;= nr &lt; 3 and 0 &lt;= nc &lt; 3:
+            nb = nr * 3 + nc
+            nxt = list(s)
+            nxt[b], nxt[nb] = nxt[nb], nxt[b]
+            nxt = tuple(nxt)
+            if nxt not in visited or g + 1 &lt; visited[nxt]:
+                visited[nxt] = g + 1
+                heapq.heappush(pq, (g + 1 + manhattan(nxt), g + 1, nxt, path + [act]))
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
@@ -1719,11 +1901,73 @@ Nodes expanded (excluding goal): 91</div>
       <!-- SOURCE CODE CARD -->
       <div id="p4-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (36 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (36 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract4_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 4: Game Tree - Minimax vs. Alpha-Beta Pruning
+# Max 35 lines - Clean &amp; Exam-Ready
+
+leaves = [6, 8, 0, 5, 8, 9, 1, 1, 3, 5, 2, 9, 0, 9, 6, 5]
+mm_nodes = [0]
+ab_nodes = [0]
+
+def minimax(depth, idx, is_max):
+    mm_nodes[0] += 1
+    if depth == 0: return leaves[idx]
+    left = minimax(depth - 1, idx * 2, not is_max)
+    right = minimax(depth - 1, idx * 2 + 1, not is_max)
+    return max(left, right) if is_max else min(left, right)
+
+def alphabeta(depth, idx, is_max, alpha, beta):
+    ab_nodes[0] += 1
+    if depth == 0: return leaves[idx]
+    val = float(&quot;-inf&quot;) if is_max else float(&quot;inf&quot;)
+    for child in [idx * 2, idx * 2 + 1]:
+        res = alphabeta(depth - 1, child, not is_max, alpha, beta)
+        if is_max:
+            val = max(val, res)
+            alpha = max(alpha, val)
+        else:
+            val = min(val, res)
+            beta = min(beta, val)
+        if alpha &gt;= beta: break
+    return val
+
+mm_val = minimax(4, 0, True)
+ab_val = alphabeta(4, 0, True, float(&quot;-inf&quot;), float(&quot;inf&quot;))
+
+print(&quot;Leaves:&quot;, leaves)
+print(f&quot;Minimax optimal score: {mm_val} (Nodes visited: {mm_nodes[0]})&quot;)
+print(f&quot;Alpha-Beta optimal score: {ab_val} (Nodes visited: {ab_nodes[0]})&quot;)
+print(f&quot;Pruned nodes saved: {mm_nodes[0] - ab_nodes[0]}&quot;)
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
@@ -2097,11 +2341,66 @@ Nodes avoided: 13 (41.9%)</div>
       <!-- SOURCE CODE CARD -->
       <div id="p5-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (29 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (29 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract5_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 5: Tower of Hanoi using BFS State-Space Search
+# Max 30 lines - Clean &amp; Exam-Ready
+from collections import deque
+
+start = ((3, 2, 1), (), ())
+goal = ((), (), (3, 2, 1))
+
+queue = deque([(start, [])])
+visited = {start}
+
+while queue:
+    state, path = queue.popleft()
+    if state == goal:
+        print(f&quot;Hanoi solved in {len(path)} moves (BFS):&quot;)
+        for step, (disk, src, dst) in enumerate(path, 1):
+            print(f&quot;Step {step}: Move Disk {disk} from Peg {src} -&gt; Peg {dst}&quot;)
+        break
+
+    for i in range(3):
+        if not state[i]: continue
+        disk = state[i][-1]
+        for j in range(3):
+            if i != j and (not state[j] or state[j][-1] &gt; disk):
+                pegs = [list(p) for p in state]
+                pegs[j].append(pegs[i].pop())
+                nxt = tuple(tuple(p) for p in pegs)
+                if nxt not in visited:
+                    visited.add(nxt)
+                    queue.append((nxt, path + [(disk, chr(65 + i), chr(65 + j))]))
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
@@ -2479,11 +2778,74 @@ Nodes expanded (excluding goal): 24</div>
       <!-- SOURCE CODE CARD -->
       <div id="p6-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (37 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (37 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract6_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 6: Sudoku Solver using Backtracking (CSP)
+# Max 35 lines - Clean &amp; Exam-Ready
+
+board = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [0, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+]
+
+def is_valid(b, r, c, num):
+    for i in range(9):
+        if b[r][i] == num or b[i][c] == num: return False
+        if b[3 * (r // 3) + i // 3][3 * (c // 3) + i % 3] == num: return False
+    return True
+
+def solve():
+    for r in range(9):
+        for c in range(9):
+            if board[r][c] == 0:
+                for num in range(1, 10):
+                    if is_valid(board, r, c, num):
+                        board[r][c] = num
+                        if solve(): return True
+                        board[r][c] = 0
+                return False
+    return True
+
+solve()
+print(&quot;Solved Sudoku Grid:&quot;)
+for row in board:
+    print(*row)
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
@@ -2984,11 +3346,74 @@ Search statistics: {&#x27;calls&#x27;: 1, &#x27;guesses&#x27;: 0, &#x27;forced&#
       <!-- SOURCE CODE CARD -->
       <div id="p7-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (37 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (37 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract7_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 7: Traveling Salesman Problem (TSP) using Local Beam Search
+# Max 35 lines - Clean &amp; Exam-Ready
+import random
+
+dist = [
+    [0, 10, 15, 20, 25],
+    [10, 0, 35, 25, 17],
+    [15, 35, 0, 30, 28],
+    [20, 25, 30, 0, 16],
+    [25, 17, 28, 16, 0]
+]
+cities = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;]
+n = len(dist)
+
+def cost(t):
+    return sum(dist[t[i]][t[(i + 1) % n]] for i in range(n))
+
+random.seed(7)
+beam = [[0] + random.sample(range(1, n), n - 1) for _ in range(3)]
+
+for _ in range(50):
+    cands = list(beam)
+    for tour in beam:
+        for i in range(1, n - 1):
+            for j in range(i + 1, n):
+                nbr = tour.copy()
+                nbr[i], nbr[j] = nbr[j], nbr[i]
+                cands.append(nbr)
+    cands.sort(key=cost)
+    new_beam = cands[:3]
+    if new_beam == beam: break
+    beam = new_beam
+
+best = beam[0]
+route = &quot; -&gt; &quot;.join(cities[c] for c in best + [best[0]])
+print(f&quot;Best Tour Found: {route}&quot;)
+print(f&quot;Minimum Tour Cost: {cost(best)}&quot;)
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
@@ -3407,11 +3832,67 @@ Local Beam Search does not guarantee the global optimum.</div>
       <!-- SOURCE CODE CARD -->
       <div id="p8-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (30 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (30 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract8_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 8: Classical Planning for 8-Puzzle using BFS
+# Max 30 lines - Clean &amp; Exam-Ready
+from collections import deque
+
+start = (1, 2, 3, 4, 0, 6, 7, 5, 8)
+goal = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+
+queue = deque([(start, [])])
+visited = {start}
+moves = [(-1, 0, &quot;UP&quot;), (1, 0, &quot;DOWN&quot;), (0, -1, &quot;LEFT&quot;), (0, 1, &quot;RIGHT&quot;)]
+
+while queue:
+    state, plan = queue.popleft()
+    if state == goal:
+        print(f&quot;Goal Reached in {len(plan)} steps (BFS Planning):&quot;)
+        print(&quot;Plan sequence:&quot;, &quot; -&gt; &quot;.join(plan))
+        break
+
+    b = state.index(0)
+    r, c = b // 3, b % 3
+    for dr, dc, act in moves:
+        nr, nc = r + dr, c + dc
+        if 0 &lt;= nr &lt; 3 and 0 &lt;= nc &lt; 3:
+            nb = nr * 3 + nc
+            nxt = list(state)
+            nxt[b], nxt[nb] = nxt[nb], nxt[b]
+            nxt = tuple(nxt)
+            if nxt not in visited:
+                visited.add(nxt)
+                queue.append((nxt, plan + [act]))
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
@@ -3837,11 +4318,65 @@ Nodes expanded (excluding goal): 8</div>
       <!-- SOURCE CODE CARD -->
       <div id="p9-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (28 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (28 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract9_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 9: Water Jug Problem using DFS
+# Max 30 lines - Clean &amp; Exam-Ready
+
+cap_a, cap_b, target = 4, 3, 2
+stack = [((0, 0), [])]
+visited = {(0, 0)}
+
+while stack:
+    (a, b), path = stack.pop()
+    if a == target or b == target:
+        print(f&quot;Goal {target}L reached in {len(path)} steps (DFS):&quot;)
+        for step, (act, state) in enumerate(path, 1):
+            print(f&quot;{step}. {act} -&gt; Jug A: {state[0]}L, Jug B: {state[1]}L&quot;)
+        break
+
+    transitions = [
+        (&quot;Fill A&quot;, (cap_a, b)),
+        (&quot;Fill B&quot;, (a, cap_b)),
+        (&quot;Empty A&quot;, (0, b)),
+        (&quot;Empty B&quot;, (a, 0)),
+        (&quot;Pour A -&gt; B&quot;, (a - min(a, cap_b - b), b + min(a, cap_b - b))),
+        (&quot;Pour B -&gt; A&quot;, (a + min(b, cap_a - a), b - min(b, cap_a - a)))
+    ]
+
+    for act, nxt in transitions:
+        if nxt not in visited:
+            visited.add(nxt)
+            stack.append((nxt, path + [(act, nxt)]))
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
@@ -4215,11 +4750,65 @@ Goal reached. DFS does not guarantee the shortest path.</div>
       <!-- SOURCE CODE CARD -->
       <div id="p10-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (28 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (28 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract10_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 10: 8-Queens Problem using Backtracking
+# Max 30 lines - Clean &amp; Exam-Ready
+
+n = 8
+board = [-1] * n  # board[row] = col
+solutions = []
+
+def is_safe(row, col):
+    for r in range(row):
+        if board[r] == col or abs(board[r] - col) == row - r:
+            return False
+    return True
+
+def solve(row):
+    if row == n:
+        solutions.append(board.copy())
+        return
+    for col in range(n):
+        if is_safe(row, col):
+            board[row] = col
+            solve(row + 1)
+            board[row] = -1
+
+solve(0)
+print(f&quot;Total Solutions for {n}-Queens: {len(solutions)}&quot;)
+print(&quot;First Solution (col per row):&quot;, solutions[0])
+for col in solutions[0]:
+    print(&quot; &quot;.join(&quot;Q&quot; if c == col else &quot;.&quot; for c in range(n)))
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
@@ -4675,11 +5264,66 @@ Statistics for ALL solutions: {&#x27;calls&#x27;: 1165, &#x27;candidates_tried&#
       <!-- SOURCE CODE CARD -->
       <div id="p11-code" class="card-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-          <h2 class="section-heading" style="margin-bottom:0;">Complete Python Source Code (Clean & Line-by-Line Explained)</h2>
+          <h2 class="section-heading" style="margin-bottom:0;">Python Source Code (Two Versions Available)</h2>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:0.5rem;">
-          Simple, beginner-friendly Python 3 implementation with no confusing shorthands. Every line has a clear explanation comment beside it.
-        </p>
+
+        <div class="callout callout-tip" style="margin-bottom:1.25rem;">
+          <div class="callout-title">Exam Tip — Choose Your Code Version:</div>
+          <strong>Version 1 (Exam Quick Version):</strong> Short, minimal (29 lines), max 30-40 lines, perfect for memorizing and writing quickly on answer sheets or IDLE during exams.<br>
+          <strong>Version 2 (Full Lab Manual Version):</strong> Comprehensive reference with line-by-line comments, detailed diagnostics, and full state tracing.
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.2rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>⚡ Version 1: Quick Exam Code</span>
+          <span class="badge badge-teal">Exam-Ready (29 lines)</span>
+        </h3>
+
+        <div class="code-container">
+          <div class="code-header">
+            <span class="code-filename">
+              <span>pract11_simple.py</span>
+            </span>
+            <button class="copy-btn" type="button" aria-label="Copy source code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre><code># Practical 11: Rule-Based Chatbot using Regular Expressions
+# Max 30 lines - Clean &amp; Exam-Ready
+import re
+
+rules = [
+    (r&quot;\b(hello|hi|hey)\b&quot;, &quot;Hello! How can I help you today?&quot;),
+    (r&quot;\bmy name is (?P&lt;name&gt;\w+)&quot;, &quot;Nice to meet you, {name}!&quot;),
+    (r&quot;\bhow are you\b&quot;, &quot;I&#x27;m doing well, thank you!&quot;),
+    (r&quot;\b(ai|artificial intelligence)\b&quot;, &quot;AI is the study of systems that perceive and act intelligently.&quot;),
+    (r&quot;\b(what is a chatbot|chatbot)\b&quot;, &quot;A chatbot is an NLP program that converses with humans.&quot;),
+    (r&quot;\b(bye|exit|quit)\b&quot;, &quot;Goodbye! Have a great day!&quot;)
+]
+
+def reply(msg):
+    for pattern, template in rules:
+        m = re.search(pattern, msg.lower())
+        if m: return template.format(**m.groupdict()), (&quot;bye&quot; in pattern or &quot;exit&quot; in pattern)
+    return &quot;I do not understand that. Ask me about AI or say hello!&quot;, False
+
+print(&quot;AI Chatbot started! (type &#x27;bye&#x27; to exit)&quot;)
+while True:
+    try:
+        user = input(&quot;You: &quot;)
+        if not user.strip(): continue
+        bot_msg, stop = reply(user)
+        print(&quot;Bot:&quot;, bot_msg)
+        if stop: break
+    except EOFError:
+        break
+</code></pre>
+        </div>
+
+        <h3 style="font-size:1.05rem; margin-top:1.75rem; margin-bottom:0.5rem; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
+          <span>📖 Version 2: Complete Lab Reference Code</span>
+          <span class="badge badge-amber">Full Tracing</span>
+        </h3>
 
         <div class="code-container">
           <div class="code-header">
